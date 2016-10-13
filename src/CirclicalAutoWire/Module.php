@@ -39,16 +39,16 @@ class Module
         $application = $mvcEvent->getApplication();
         $serviceLocator = $application->getServiceManager();
         $routerService = $serviceLocator->get(RouterService::class);
-        $sc = new DirectoryScanner();
+        $directoryScanner = new DirectoryScanner();
 
         foreach ($this->modulesToScan as $moduleName) {
             if (is_dir(getcwd() . '/module/' . $moduleName)) {
-                $sc->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
+                $directoryScanner->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
             }
         }
 
         $controllerClasses = [];
-        foreach ($sc->getClassNames() as $className) {
+        foreach ($directoryScanner->getClassNames() as $className) {
             if (strstr($className, '\\Controller\\')) {
                 $controllerClasses[] = $className;
             }
