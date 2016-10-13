@@ -1,0 +1,12 @@
+.DS_Store
+configs/.DS_Store 
+!.gitignore
+.composer.lock
+composer.lock
+vendor
+.idea
+/build
+.vagrant
+nbproject
+phpunit.xml
+index.php
