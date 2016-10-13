@@ -1,16 +1,17 @@
 <?php
 
-namespace CirclicalAutoWire\Factory\Listener;
+namespace CirclicalAutoWire\Factory\Service;
 
 
 use CirclicalAutoWire\Listener\ModuleLoadedListener;
+use CirclicalAutoWire\Service\RouterService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class ModuleLoadedListenerFactory implements FactoryInterface
+class RouterServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new ModuleLoadedListener();
+        return new RouterService($container->get('HttpRouter'));
     }
 }

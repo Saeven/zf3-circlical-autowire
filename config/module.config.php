@@ -4,7 +4,7 @@ return [
 
     'service_manager' => [
         'factories' => [
-            \CirclicalAutoWire\Listener\ModuleLoadedListener::class => \CirclicalAutoWire\Factory\Listener\ModuleLoadedListenerFactory::class,
+            \CirclicalAutoWire\Service\RouterService::class => \CirclicalAutoWire\Factory\Service\RouterServiceFactory::class,
         ],
     ],
 

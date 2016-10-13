@@ -27,6 +27,7 @@
     "zendframework/zend-eventmanager": "^3.0.1",
     "zendframework/zend-console": "@stable",
     "zendframework/zend-router": "@stable",
+    "zendframework/zend-code": "@stable",
     "doctrine/annotations": "@stable"
   },
   "require-dev": {
