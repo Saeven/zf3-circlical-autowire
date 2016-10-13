@@ -1,0 +1,41 @@
+{
+  "name": "saeven/zf3-circlical-autowire",
+  "description": "Annotation based routing, and magic Controller creation for ZF3.",
+  "type": "library",
+  "license": "MPL2.0",
+  "homepage": "https://github.com/Saeven/zf3-circlical-autowire",
+  "keywords": [
+    "router",
+    "zf3",
+    "annotation",
+    "acl",
+    "controller"
+  ],
+  "authors": [
+    {
+      "name": "Alexandre Lemaire",
+      "email": "alemaire@circlical.com",
+      "homepage": "http://circlical.com/",
+      "role": "Paper Stapler"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.0.0",
+    "zendframework/zend-mvc": "^3.0.1",
+    "zendframework/zend-servicemanager": "^3.0.1",
+    "zendframework/zend-eventmanager": "^3.0.1",
+    "zendframework/zend-router": "@stable",
+    "doctrine/annotations": "@stable"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "@stable",
+    "henrikbjorn/phpspec-code-coverage": "@stable",
+    "codacy/coverage": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "CirclicalAutoWire\\": "src/CirclicalAutoWire"
+    }
+  }
+}
