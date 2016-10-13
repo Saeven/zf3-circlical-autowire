@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/saeven/zf3-circlical-autowire/downloads)](https://packagist.org/packages/saeven/zf3-circlical-autowire)
 
 
-Live the dream, stop your wrecked controller workflow!
+Live the dream, your controller authoring workflow doesn't have to be so painful!
   
 ##Route using annotations!
 
