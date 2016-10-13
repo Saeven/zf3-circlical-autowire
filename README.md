@@ -78,5 +78,4 @@ Then, on any action in that controller, use these types of annotations:
 * Create a "Production" mode that won't scan controllers on load
 * Create a CLI command to compile down your annotations into bona-fide routes for Production
 
-Profiling with Blackfire, this module has an incredibly small impact.  Don't sweat the performance aspect too much -- instead, worry about
-what you'll do with all your newfound free time!
+Profiling with Blackfire, this module has an incredibly small impact.  Don't sweat the performance aspect too much -- instead, worry about what you'll do with all your newfound free time!  
