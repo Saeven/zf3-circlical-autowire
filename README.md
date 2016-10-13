@@ -60,14 +60,14 @@ Then, on any action in that controller, use these types of annotations:
      }
      
     /**
-     * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]")
+     * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]"})
      */
      public function anyOldNameAction(){
         // ...
      }
      
     /**
-     * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]", defaults={"param":"index"})
+     * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]"}, defaults={"param":"index"})
      */
      public function anyOldNameAction(){
         // ...
