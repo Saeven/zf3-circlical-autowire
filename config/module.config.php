@@ -8,4 +8,10 @@ return [
         ],
     ],
 
+    'controllers' => [
+        'abstract_factories' => [
+            \CirclicalAutoWire\Factory\Controller\ReflectionFactory::class,
+        ],
+    ],
+
 ];
