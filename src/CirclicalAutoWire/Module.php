@@ -2,10 +2,9 @@
 
 namespace CirclicalAutoWire;
 
-use CirclicalUser\Entity\UserAuthenticationLog;
-use CirclicalUser\Listener\AccessListener;
-use Zend\Console\Console;
+use CirclicalAutoWire\Listener\ModuleLoadedListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Console\Console;
 
 class Module
 {
@@ -17,7 +16,15 @@ class Module
 
     public function onBootstrap(MvcEvent $mvcEvent)
     {
+        if (Cons::isConsole()) {
+            return;
+        }
 
+        $application = $mvcEvent->getApplication();
+        $serviceLocator = $application->getServiceManager();
+        $strategy = $serviceLocator->get(ModuleLoadedListener::class);
+        $eventManager = $application->getEventManager();
+        $strategy->attach($eventManager);
     }
 
 }

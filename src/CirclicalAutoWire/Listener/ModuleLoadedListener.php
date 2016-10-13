@@ -1,7 +1,7 @@
 <?php
 
 
-namespace CirclicalAutoWire;
+namespace CirclicalAutoWire\Listener;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
