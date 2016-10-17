@@ -31,14 +31,20 @@ class RouterService
     public function parseController(string $controllerClass)
     {
         $class = new \ReflectionClass($controllerClass);
+        $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
+
+
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $controllerClass) {
 
-                $set = $this->reader->getMethodAnnotations($method, 'Route');
+                $set = $this->reader->getMethodAnnotations($method, Route::class);
 
                 /** @var Route $routerAnnotation */
                 foreach ($set as $routerAnnotation) {
+                    if( $classAnnotation ){
+                        $routerAnnotation->setPrefix( $classAnnotation->value );
+                    }
                     $this->router->addRoute(
                         $routerAnnotation->name ?? 'route-' . static::$routesParsed++,
                         $routerAnnotation->transform($controllerClass, $method->getName())
