@@ -61,7 +61,7 @@ class Route
 
     private function identifyRoute(string $route): string
     {
-        if (strpos($route, ':') !== false) {
+        if (strpos($route, ':') !== false || strpos($route, '[') !== false) {
             return Segment::class;
         }
 
