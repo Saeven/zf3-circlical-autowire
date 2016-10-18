@@ -1,4 +1,4 @@
-# zf3-circlical-autowire
+# Route Auto-Wiring for Zend-MVC
 [![Build Status](https://travis-ci.org/Saeven/zf3-circlical-autowire.svg?branch=master)](https://travis-ci.org/Saeven/zf3-circlical-autowire)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/488fcf3040df4fa4b3ab4b2c15ad5752)](https://www.codacy.com/app/alemaire/zf3-circlical-autowire?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Saeven/zf3-circlical-autowire&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/488fcf3040df4fa4b3ab4b2c15ad5752)](https://www.codacy.com/app/alemaire/zf3-circlical-autowire?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Saeven/zf3-circlical-autowire&amp;utm_campaign=Badge_Coverage)
@@ -6,20 +6,14 @@
 [![Total Downloads](https://poser.pugx.org/saeven/zf3-circlical-autowire/downloads)](https://packagist.org/packages/saeven/zf3-circlical-autowire)
 
 
-Live the dream, your controller authoring workflow doesn't have to be so painful!
+A zend-mvc module that favors rapid development, that compiles routes to standard PHP arrays for production.
   
-##Route using annotations!
-
-You can use annotations right above your Controller actions to automatically plug routes into the ZF3 Router.  No more gear-switching 
+Use annotations right above your actions to automatically plug routes into the ZF3 Router.  No more gear-switching 
 to route files, or digging through route config arrays when you are refactoring.
 
-Freeedom!
+This module also provides a reflection-based abstract factory to automatically wire your controllers using their constructors.
+Just define your constructors (as you should) and let the lazy factory do the rest!
 
-##Automatic controller factory!
-
-**PLUS**, stop creating a proliferation of controller factories that are all the same!
-This module provides a very simple reflection factory for controllers.  Just define your constructors (as you should)
-and let the lazy factory do the rest!
 
 
 ##Installation
