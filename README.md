@@ -6,7 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/saeven/zf3-circlical-autowire/downloads)](https://packagist.org/packages/saeven/zf3-circlical-autowire)
 
 
-A zend-mvc module that favors rapid development, that compiles routes to standard PHP arrays for production.
+A zend-mvc module that favors rapid development, that compiles routes to standard PHP arrays for production (and merges them automatically for you too).
   
 Use annotations right above your actions to automatically plug routes into the ZF3 Router.  No more gear-switching 
 to route files, or digging through route config arrays when you are refactoring.
