@@ -10,10 +10,8 @@ Live the dream, your controller authoring workflow doesn't have to be so painful
   
 ##Route using annotations!
 
-
-You can use annotations right above your Controller actions to 
-automatically plug routes into the ZF3 Router.  No more gear-switching to route files, or digging
-through route config arrays when you are refactoring.
+You can use annotations right above your Controller actions to automatically plug routes into the ZF3 Router.  No more gear-switching 
+to route files, or digging through route config arrays when you are refactoring.
 
 Freeedom!
 
@@ -35,13 +33,15 @@ Then, add it near the top of your application.config.php
     'CirclicalAutoWire',
     
     
-## Usage
+## Prepping Annotations
 
-In any controller, simply add this use statement:
+In any controller that should use this module, simply add this **use statement**:
 
     use CirclicalAutoWire\Annotations\Route;
     
-Then, on any action in that controller, use these types of annotations:
+### Method Annotations
+    
+On any action in a controller with the use statement, use these types of annotations:
 
     /**
      * Your usual stuff here
@@ -53,6 +53,7 @@ Then, on any action in that controller, use these types of annotations:
      }
      
     /**
+     * This route has a parameter
      * @Route("/freedom/:param")
      */
      public function anyOldNameAction(){
@@ -60,6 +61,7 @@ Then, on any action in that controller, use these types of annotations:
      }
      
     /**
+     * This route has a parameter and a constraint
      * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]"})
      */
      public function anyOldNameAction(){
@@ -67,15 +69,65 @@ Then, on any action in that controller, use these types of annotations:
      }
      
     /**
+     * Route with parameter, constraint, and defaults
      * @Route("/freedom/:param", constraints={"param":"[a-zA-Z]"}, defaults={"param":"index"})
      */
      public function anyOldNameAction(){
         // ...
      }
      
-##TODO
+    /**
+     * Route with parameter, name, constraint, and defaults
+     * @Route("/freedom/:param", name="/easy-as-pie" constraints={"param":"[a-zA-Z]"}, defaults={"param":"index"})
+     */
+     public function anyOldNameAction(){
+        // ...
+     }
+     
+     
+### Controller Annotations
 
-* Create a "Production" mode that won't scan controllers on load
-* Create a CLI command to compile down your annotations into bona-fide routes for Production
+Provided as a convenience, these help you reach a higher level of lazy.  If you know all your Controller routes will start 
+with `/index/system`, simply annotate your controller as such:
 
-Profiling with Blackfire, this module has an incredibly small impact.  Don't sweat the performance aspect too much -- instead, worry about what you'll do with all your newfound free time!  
+    /**
+     * Controller Index
+     * @Route("/index/system")
+     */
+     class IndexController extends AbstractActionController
+     {
+     
+         /**
+          * @Route("/update")
+          */
+         public function updateAction(){
+         
+         }
+         
+         /**
+          * @Route("/get/:id")
+          */
+         public function getAction(){
+         
+         }
+     }
+
+In the example above, the following routes will be compiled:
+
+* /index/system/update
+* /index/system/get/:id
+
+## Two Modes
+
+### Development
+
+In this mode, annotations are scanned and read.  There's an incredibly small overhead to scanning Controller code.  Each time you refresh,
+you will see the compiled routes file recreated in the location you have specified (see this Module's config file).
+
+### Production
+
+In this mode, annotations are not scanned.  Instead, the config file you created in dev mode is automatically merged with your Zend Framework's
+ routes/route config to create a 'traditional' scenario where routes are hardcoded.  Zero module overhead.
+ 
+
+> I hope you like this module, you can reach out on freenode's #zftalk or @Saeven on Twitter!  All PRs considered!

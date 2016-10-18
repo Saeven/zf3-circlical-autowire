@@ -24,11 +24,30 @@ class Module
     {
         $events = $moduleManager->getEventManager();
         $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'moduleLoaded']);
+        $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, [$this, 'configMerge']);
     }
 
     public function moduleLoaded(ModuleEvent $event)
     {
         $this->modulesToScan[] = $event->getModuleName();
+    }
+
+    public function configMerge(ModuleEvent $e)
+    {
+        $configListener = $e->getConfigListener();
+        $configuration = $configListener->getMergedConfig(false);
+
+        if (!isset($configuration['circlical']['autowire'])) {
+            throw new \Exception("Autowire module enabled, but the config wasn't available!");
+        }
+
+        if ($configuration['circlical']['autowire']['production_mode']) {
+            if (file_exists($configuration['circlical']['autowire']['compile_to'])) {
+                $autowiredRoutes = include $configuration['circlical']['autowire']['compile_to'];
+                $configuration['router']['routes'] = array_merge($configuration['router']['routes'], $autowiredRoutes);
+                $configListener->setMergedConfig($configuration);
+            }
+        }
     }
 
     public function onBootstrap(MvcEvent $mvcEvent)
@@ -63,7 +82,7 @@ class Module
 
             $routeConfig = [];
             foreach ($controllerClasses as $controllerClass) {
-                $routeConfig += $routerService->parseController($controllerClass);
+                $routeConfig = array_merge($routeConfig, $routerService->parseController($controllerClass));
             }
 
             $routeConfig = new Config($routeConfig, false);
@@ -72,6 +91,4 @@ class Module
 
         }
     }
-
-
 }

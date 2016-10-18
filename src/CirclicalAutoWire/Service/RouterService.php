@@ -48,19 +48,15 @@ class RouterService
                     if ($classAnnotation) {
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
+                    $routeName = $routerAnnotation->name ?? 'route-' . static::$routesParsed++;
                     $routeParams = $routerAnnotation->transform($controllerClass, $method->getName());
 
-                    $this->router->addRoute(
-                        $routerAnnotation->name ?? 'route-' . static::$routesParsed++,
-                        $routeParams
-                    );
-                    $annotations[] = $routeParams;
+                    $this->router->addRoute($routeName, $routeParams);
+                    $annotations[$routeName] = $routeParams;
                 }
             }
         }
 
         return $annotations;
     }
-
-
 }

@@ -27,12 +27,10 @@ class Route
      */
     public $type;
 
-
     /**
      * @var array
      */
     public $constraints;
-
 
     /**
      * @var array
