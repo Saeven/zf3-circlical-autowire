@@ -78,7 +78,7 @@ On any action in a controller with the use statement, use these types of annotat
      
     /**
      * Route with parameter, name, constraint, and defaults
-     * @Route("/freedom/:param", name="/easy-as-pie" constraints={"param":"[a-zA-Z]"}, defaults={"param":"index"})
+     * @Route("/freedom/:param", name="easy-as-pie" constraints={"param":"[a-zA-Z]"}, defaults={"param":"index"})
      */
      public function anyOldNameAction(){
         // ...
