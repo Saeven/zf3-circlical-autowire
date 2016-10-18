@@ -7,7 +7,7 @@ use Zend\Router\Http\Segment;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target({"METHOD","CLASS"})
  */
 class Route
 {
@@ -16,6 +16,11 @@ class Route
      * @var string
      */
     public $value;
+
+    /**
+     * @var string
+     */
+    public $name;
 
     /**
      * @var string
@@ -48,11 +53,11 @@ class Route
             ],
         ];
 
-        if( $this->constraints ){
+        if ($this->constraints) {
             $route['options']['constraints'] = $this->constraints;
         }
 
-        if( $this->defaults ){
+        if ($this->defaults) {
             $route['options']['defaults'] = $this->defaults;
         }
 
@@ -66,6 +71,11 @@ class Route
         }
 
         return Literal::class;
+    }
+
+    public function setPrefix($path)
+    {
+        $this->value = str_replace('//', '/', $path . $this->value);
     }
 
 }
