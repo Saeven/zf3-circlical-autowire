@@ -119,6 +119,8 @@ In the example above, the following routes will be compiled:
 
 ## Two Modes
 
+Mode is set, via config.
+
 ### Development
 
 In this mode, annotations are scanned and read.  There's an incredibly small overhead to scanning Controller code.  Each time you refresh,
