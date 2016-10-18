@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d1148a1ffb873ad3fc5c4bad70317576",
-    "content-hash": "ac596a2d87514fda28f7829e7c544324",
+    "hash": "050011be1a28a6a028a6297bf2193940",
+    "content-hash": "fa27adf4291d9949308535e7e680ec1d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -211,16 +211,16 @@
         },
         {
             "name": "zendframework/zend-config",
-            "version": "dev-develop",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-config.git",
-                "reference": "ef8e216e5a991d6a889c00e9d445d52a5beb01ea"
+                "reference": "2920e877a9f6dca9fa8f6bd3b1ffc2e19bb1e30d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-config/zipball/ef8e216e5a991d6a889c00e9d445d52a5beb01ea",
-                "reference": "ef8e216e5a991d6a889c00e9d445d52a5beb01ea",
+                "url": "https://api.github.com/repos/zendframework/zend-config/zipball/2920e877a9f6dca9fa8f6bd3b1ffc2e19bb1e30d",
+                "reference": "2920e877a9f6dca9fa8f6bd3b1ffc2e19bb1e30d",
                 "shasum": ""
             },
             "require": {
@@ -231,7 +231,7 @@
                 "fabpot/php-cs-fixer": "1.7.*",
                 "phpunit/phpunit": "~4.0",
                 "zendframework/zend-filter": "^2.6",
-                "zendframework/zend-i18n": "^2.6",
+                "zendframework/zend-i18n": "^2.5",
                 "zendframework/zend-json": "^2.6.1",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
             },
@@ -263,7 +263,7 @@
                 "config",
                 "zf2"
             ],
-            "time": "2016-03-07 15:48:18"
+            "time": "2016-02-04 23:01:10"
         },
         {
             "name": "zendframework/zend-console",
@@ -1013,12 +1013,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/codacy/php-codacy-coverage.git",
-                "reference": "c598e10d6a30ae964b69f59cd31167b46ca259d8"
+                "reference": "2c80784a95f844e6988700e7373225284b713dd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codacy/php-codacy-coverage/zipball/c598e10d6a30ae964b69f59cd31167b46ca259d8",
-                "reference": "c598e10d6a30ae964b69f59cd31167b46ca259d8",
+                "url": "https://api.github.com/repos/codacy/php-codacy-coverage/zipball/2c80784a95f844e6988700e7373225284b713dd2",
+                "reference": "2c80784a95f844e6988700e7373225284b713dd2",
                 "shasum": ""
             },
             "require": {
@@ -1050,7 +1050,7 @@
             ],
             "description": "Sends PHP test coverage information to Codacy.",
             "homepage": "https://github.com/codacy/php-codacy-coverage",
-            "time": "2016-08-23 16:24:08"
+            "time": "2016-10-14 09:44:29"
         },
         {
             "name": "doctrine/instantiator",
@@ -2551,12 +2551,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "1a6cc8d09dd675802ca93de290ac483c10ef95e0"
+                "reference": "c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/1a6cc8d09dd675802ca93de290ac483c10ef95e0",
-                "reference": "1a6cc8d09dd675802ca93de290ac483c10ef95e0",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c",
+                "reference": "c0c92082a2ffef8fab7941d4f6fd6a6a72ed627c",
                 "shasum": ""
             },
             "require": {
@@ -2593,7 +2593,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-10-10 07:45:47"
+            "time": "2016-10-17 06:50:33"
         }
     ],
     "aliases": [],
@@ -2602,6 +2602,7 @@
         "zendframework/zend-console": 0,
         "zendframework/zend-router": 0,
         "zendframework/zend-code": 0,
+        "zendframework/zend-config": 0,
         "doctrine/annotations": 0,
         "phpspec/phpspec": 0,
         "henrikbjorn/phpspec-code-coverage": 0,

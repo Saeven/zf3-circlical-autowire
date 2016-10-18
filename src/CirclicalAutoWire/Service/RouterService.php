@@ -21,18 +21,21 @@ class RouterService
 
     public static $routesParsed = 0;
 
-    public function __construct(TreeRouteStack $router)
+    private $productionMode;
+
+    public function __construct(TreeRouteStack $router, bool $productionMode)
     {
         AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../"));
         $this->router = $router;
         $this->reader = new AnnotationReader();
+        $this->productionMode = $productionMode;
     }
 
-    public function parseController(string $controllerClass)
+    public function parseController(string $controllerClass): array
     {
         $class = new \ReflectionClass($controllerClass);
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
-
+        $annotations = [];
 
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
@@ -42,16 +45,21 @@ class RouterService
 
                 /** @var Route $routerAnnotation */
                 foreach ($set as $routerAnnotation) {
-                    if( $classAnnotation ){
-                        $routerAnnotation->setPrefix( $classAnnotation->value );
+                    if ($classAnnotation) {
+                        $routerAnnotation->setPrefix($classAnnotation->value);
                     }
+                    $routeParams = $routerAnnotation->transform($controllerClass, $method->getName());
+
                     $this->router->addRoute(
                         $routerAnnotation->name ?? 'route-' . static::$routesParsed++,
-                        $routerAnnotation->transform($controllerClass, $method->getName())
+                        $routeParams
                     );
+                    $annotations[] = $routeParams;
                 }
             }
         }
+
+        return $annotations;
     }
 
 

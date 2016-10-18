@@ -28,6 +28,7 @@
     "zendframework/zend-console": "@stable",
     "zendframework/zend-router": "@stable",
     "zendframework/zend-code": "@stable",
+    "zendframework/zend-config": "@stable",
     "doctrine/annotations": "@stable"
   },
   "require-dev": {

@@ -19,7 +19,7 @@ class RouterServiceSpec extends ObjectBehavior
 
     function let(TreeRouteStack $routeStack)
     {
-        $this->beConstructedWith($routeStack);
+        $this->beConstructedWith($routeStack, false);
     }
 
     function it_parses_controllers_by_class()
@@ -28,7 +28,7 @@ class RouterServiceSpec extends ObjectBehavior
         $this->parseController(SimpleController::class);
     }
 
-    function it_parses_controllers_with_annotations( $routeStack )
+    function it_parses_controllers_with_annotations($routeStack)
     {
         include __DIR__ . '/../../CirclicalAutoWire/Controller/AnnotatedController.php';
 
@@ -53,7 +53,7 @@ class RouterServiceSpec extends ObjectBehavior
                 ],
                 'constraints' => [
                     'param1' => "\\d",
-                    'param2' => "A-Za-z"
+                    'param2' => "A-Za-z",
                 ],
             ],
         ])->shouldBeCalled();

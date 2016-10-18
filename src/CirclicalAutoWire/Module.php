@@ -4,6 +4,8 @@ namespace CirclicalAutoWire;
 
 use CirclicalAutoWire\Service\RouterService;
 use Zend\Code\Scanner\DirectoryScanner;
+use Zend\Config\Config;
+use Zend\Config\Writer\PhpArray;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
@@ -38,24 +40,36 @@ class Module
         /** @var RouterService $routerService */
         $application = $mvcEvent->getApplication();
         $serviceLocator = $application->getServiceManager();
-        $routerService = $serviceLocator->get(RouterService::class);
-        $directoryScanner = new DirectoryScanner();
 
-        foreach ($this->modulesToScan as $moduleName) {
-            if (is_dir(getcwd() . '/module/' . $moduleName)) {
-                $directoryScanner->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
+        $config = $serviceLocator->get('config');
+        $productionMode = $config['circlical']['autowire']['production_mode'];
+
+        if (!$productionMode) {
+            $routerService = $serviceLocator->get(RouterService::class);
+            $directoryScanner = new DirectoryScanner();
+
+            foreach ($this->modulesToScan as $moduleName) {
+                if (is_dir(getcwd() . '/module/' . $moduleName)) {
+                    $directoryScanner->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
+                }
             }
-        }
 
-        $controllerClasses = [];
-        foreach ($directoryScanner->getClassNames() as $className) {
-            if (strstr($className, '\\Controller\\')) {
-                $controllerClasses[] = $className;
+            $controllerClasses = [];
+            foreach ($directoryScanner->getClassNames() as $className) {
+                if (strstr($className, '\\Controller\\')) {
+                    $controllerClasses[] = $className;
+                }
             }
-        }
 
-        foreach ($controllerClasses as $controllerClass) {
-            $routerService->parseController($controllerClass);
+            $routeConfig = [];
+            foreach ($controllerClasses as $controllerClass) {
+                $routeConfig += $routerService->parseController($controllerClass);
+            }
+
+            $routeConfig = new Config($routeConfig, false);
+            $writer = new PhpArray();
+            $writer->toFile($config['circlical']['autowire']['compile_to'], $routeConfig, true);
+
         }
     }
 
