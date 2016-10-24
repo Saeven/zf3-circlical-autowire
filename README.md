@@ -43,6 +43,7 @@ In any controller that should use this module, simply add this **use statement**
     
 On any action in a controller with the use statement, use these types of annotations:
 
+    <?php
     /**
      * Your usual stuff here
      * @returns bool
@@ -85,11 +86,92 @@ On any action in a controller with the use statement, use these types of annotat
      }
      
      
+### Child Routes
+     
+Child routes are simple to define.  Define the parent by giving it a name, and whether or not it may terminate.  Separately, tell the child routes that their `parent` is that first route (by way of name).  Here's a complete example:
+
+    <?php
+    /**
+     * Class ChildRouteController
+     * @package Spec\CirclicalAutoWire\Controller
+     */
+    class ChildRouteController extends AbstractActionController
+    {
+    
+        /**
+         * @Route("/icecream", name="icecream", terminate=true)
+         */
+        public function indexAction(){}
+    
+        /**
+         * This is a sample docblock
+         *
+         * @Route("/eat", parent="icecream", name="eat")
+         */
+        public function eatAction(){}
+    
+    
+        /**
+         * @Route("/select/:flavor", constraints={"flavor":"\d"}, name="select", parent="icecream")
+         */
+        public function selectFlavorAction(){}
+    
+    }
+
+This will produce:
+
+    <?php
+    'router' => [
+        'routes' => [
+            'icecream' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/icecream',
+                    'defaults' => [
+                        'controller' => ChildRouteController::class,
+                        'action' => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'eat' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => "/eat",
+                            'defaults' => [
+                                'controller' => ChildRouteController::class,
+                                'action' => 'eat',
+                            ],
+                        ],
+                    ],
+                    'select' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => "/select/:flavor",
+                            'defaults' => [
+                                'controller' => ChildRouteController::class,
+                                'action' => 'selectFlavor',
+                            ],
+                            'constraints' => [
+                                'flavor' => '\d',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+
+      
+      
+     
+     
 ### Controller Annotations
 
 Provided as a convenience, these help you reach a higher level of lazy.  If you know all your Controller routes will start 
 with `/index/system`, simply annotate your controller as such:
 
+    <?php
     /**
      * Controller Index
      * @Route("/index/system")

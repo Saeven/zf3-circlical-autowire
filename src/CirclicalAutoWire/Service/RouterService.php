@@ -3,6 +3,7 @@
 namespace CirclicalAutoWire\Service;
 
 use CirclicalAutoWire\Annotations\Route;
+use CirclicalAutoWire\Model\AnnotatedRoute;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Zend\Router\Http\TreeRouteStack;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -36,27 +37,45 @@ class RouterService
         $class = new \ReflectionClass($controllerClass);
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
         $annotations = [];
+        $routes = [];
+
+        // First, get all annotations for this controller
 
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $controllerClass) {
-
                 $set = $this->reader->getMethodAnnotations($method, Route::class);
-
                 /** @var Route $routerAnnotation */
                 foreach ($set as $routerAnnotation) {
                     if ($classAnnotation) {
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
                     $routeName = $routerAnnotation->name ?? 'route-' . static::$routesParsed++;
-                    $routeParams = $routerAnnotation->transform($controllerClass, $method->getName());
-
-                    $this->router->addRoute($routeName, $routeParams);
-                    $annotations[$routeName] = $routeParams;
+                    $annotations[$routeName] = new AnnotatedRoute($routerAnnotation, $controllerClass, $method->getName());
                 }
             }
         }
 
-        return $annotations;
+        // Then, associate children to parents
+        foreach ($annotations as $routeName => $annotatedRoute) {
+            if( $parent = $annotatedRoute->getParent() ){
+                if( !isset($annotations[$parent]) ){
+                    throw new \Exception( "An autowired route $routeName declares a parent of $parent, but $parent was not defined.");
+                }
+                $annotations[$parent]->addChild( $routeName, $annotatedRoute );
+            }
+        }
+
+        // Lastly, push all stacked routes into the router
+        foreach( $annotations as $routeName => $annotatedRoute ){
+            if( $annotatedRoute->getParent() ){
+                continue;
+            }
+            $routeParams = $annotatedRoute->toArray();
+            $this->router->addRoute($routeName,$routeParams);
+            $routes[] = $routeParams;
+        }
+
+        return $routes;
     }
 }
