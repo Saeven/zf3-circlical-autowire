@@ -24,20 +24,32 @@ class RouterService
 
     private $productionMode;
 
+    private $annotations;
+
     public function __construct(TreeRouteStack $router, bool $productionMode)
     {
         AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../"));
         $this->router = $router;
         $this->reader = new AnnotationReader();
         $this->productionMode = $productionMode;
+        $this->annotations = [];
     }
 
-    public function parseController(string $controllerClass): array
+    /**
+     * Reset the annotations variable
+     */
+    public function reset(){
+        $this->annotations = [];
+    }
+
+    /**
+     * Parse a controller, storing results into the 'annotations' class variable
+     * @param string $controllerClass
+     */
+    public function parseController(string $controllerClass)
     {
         $class = new \ReflectionClass($controllerClass);
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
-        $annotations = [];
-        $routes = [];
 
         // First, get all annotations for this controller
 
@@ -51,23 +63,32 @@ class RouterService
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
                     $routeName = $routerAnnotation->name ?? 'route-' . static::$routesParsed++;
-                    $annotations[$routeName] = new AnnotatedRoute($routerAnnotation, $controllerClass, $method->getName());
+                    $this->annotations[$routeName] = new AnnotatedRoute($routerAnnotation, $controllerClass, $method->getName());
                 }
             }
         }
+    }
 
+    /**
+     * Compile routes into an array, simultaneously adding them to the router
+     * @return array
+     * @throws \Exception
+     */
+    public function compile() : array
+    {
+        $routes = [];
         // Then, associate children to parents
-        foreach ($annotations as $routeName => $annotatedRoute) {
+        foreach ($this->annotations as $routeName => $annotatedRoute) {
             if( $parent = $annotatedRoute->getParent() ){
-                if( !isset($annotations[$parent]) ){
+                if( !isset($this->annotations[$parent]) ){
                     throw new \Exception( "An autowired route $routeName declares a parent of $parent, but $parent was not defined.");
                 }
-                $annotations[$parent]->addChild( $routeName, $annotatedRoute );
+                $this->annotations[$parent]->addChild( $routeName, $annotatedRoute );
             }
         }
 
         // Lastly, push all stacked routes into the router
-        foreach( $annotations as $routeName => $annotatedRoute ){
+        foreach( $this->annotations as $routeName => $annotatedRoute ){
             if( $annotatedRoute->getParent() ){
                 continue;
             }

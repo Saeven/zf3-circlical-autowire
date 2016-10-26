@@ -4,6 +4,7 @@ namespace Spec\CirclicalAutoWire\Service;
 
 use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ChildRouteController;
+use Spec\CirclicalAutoWire\Controller\DistantChildRouteController;
 use Spec\CirclicalAutoWire\Controller\SimpleController;
 use CirclicalAutoWire\Service\RouterService;
 use PhpSpec\ObjectBehavior;
@@ -59,6 +60,7 @@ class RouterServiceSpec extends ObjectBehavior
             ],
         ])->shouldBeCalled();
         $this->parseController(AnnotatedController::class);
+        $this->compile();
     }
 
     function it_parses_child_routes($routeStack)
@@ -103,6 +105,62 @@ class RouterServiceSpec extends ObjectBehavior
         ])->shouldBeCalled();
 
         $this->parseController(ChildRouteController::class);
+        $this->compile();
+    }
 
+    function it_parses_child_routes_across_controllers($routeStack)
+    {
+        include __DIR__ . '/../../CirclicalAutoWire/Controller/DistantChildRouteController.php';
+
+        $routeStack->addRoute('icecream', [
+            'type' => Literal::class,
+            'options' => [
+                'route' => '/icecream',
+                'defaults' => [
+                    'controller' => ChildRouteController::class,
+                    'action' => 'index',
+                ],
+            ],
+            'may_terminate' => true,
+            'child_routes' => [
+                'eat' => [
+                    'type' => Literal::class,
+                    'options' => [
+                        'route' => "/eat",
+                        'defaults' => [
+                            'controller' => ChildRouteController::class,
+                            'action' => 'eat',
+                        ],
+                    ],
+                ],
+                'melt' => [
+                    'type' => Literal::class,
+                    'options' => [
+                        'route' => "/melt",
+                        'defaults' => [
+                            'controller' => DistantChildRouteController::class,
+                            'action' => 'melt',
+                        ],
+                    ],
+                ],
+                'select' => [
+                    'type' => Segment::class,
+                    'options' => [
+                        'route' => "/select/:flavor",
+                        'defaults' => [
+                            'controller' => ChildRouteController::class,
+                            'action' => 'selectFlavor',
+                        ],
+                        'constraints' => [
+                            'flavor' => '\d',
+                        ],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled();
+
+        $this->parseController(ChildRouteController::class);
+        $this->parseController(DistantChildRouteController::class);
+        $this->compile();
     }
 }

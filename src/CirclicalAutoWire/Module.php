@@ -80,15 +80,13 @@ class Module
                 }
             }
 
-            $routeConfig = [];
             foreach ($controllerClasses as $controllerClass) {
-                $routeConfig = array_merge($routeConfig, $routerService->parseController($controllerClass));
+                $routerService->parseController($controllerClass);
             }
-
-            $routeConfig = new Config($routeConfig, false);
+            $routeConfig = new Config($routerService->compile(), false);
             $writer = new PhpArray();
             $writer->toFile($config['circlical']['autowire']['compile_to'], $routeConfig, true);
-
+            $routerService->reset();
         }
     }
 }
