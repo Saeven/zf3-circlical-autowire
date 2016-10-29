@@ -94,7 +94,7 @@ class RouterService
             }
             $routeParams = $annotatedRoute->toArray();
             $this->router->addRoute($routeName,$routeParams);
-            $routes[] = $routeParams;
+            $routes[$routeName] = $routeParams;
         }
 
         return $routes;
