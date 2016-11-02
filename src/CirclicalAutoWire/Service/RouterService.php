@@ -14,7 +14,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  *
  * This service's purpose, is to bridge annotations with the Zend SM router
  */
-class RouterService
+final class RouterService
 {
     private $router;
 

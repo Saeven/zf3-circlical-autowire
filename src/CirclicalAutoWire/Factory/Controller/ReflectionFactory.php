@@ -5,7 +5,7 @@ namespace CirclicalAutoWire\Factory\Controller;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
-class ReflectionFactory implements AbstractFactoryInterface
+final class ReflectionFactory implements AbstractFactoryInterface
 {
 
     /**

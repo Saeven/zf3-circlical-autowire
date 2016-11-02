@@ -17,12 +17,16 @@ class AnnotatedController extends AbstractActionController
      *
      * @Route("/foobar", name="baseroute1")
      */
-    public function fooAction(){}
+    public function fooAction()
+    {
+    }
 
 
     /**
      * @Route("/foo/:param1/:param2", constraints={"param1":"\d","param2":"A-Za-z"}, name="baseroute2")
      */
-    public function routeParamAction(){}
+    public function routeParamAction()
+    {
+    }
 
 }

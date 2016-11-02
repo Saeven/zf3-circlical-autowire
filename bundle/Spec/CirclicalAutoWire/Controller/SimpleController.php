@@ -16,12 +16,16 @@ class SimpleController extends AbstractActionController
      *
      * @Route("/foobar")
      */
-    public function fooAction(){}
+    public function fooAction()
+    {
+    }
 
 
     /**
      * @Route("/foo/:param1/:param2", constraints={"param1":"\d","param2":"A-Za-z"})
      */
-    public function routeParamAction(){}
+    public function routeParamAction()
+    {
+    }
 
 }
