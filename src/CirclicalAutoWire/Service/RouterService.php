@@ -38,12 +38,14 @@ class RouterService
     /**
      * Reset the annotations variable
      */
-    public function reset(){
+    public function reset()
+    {
         $this->annotations = [];
     }
 
     /**
      * Parse a controller, storing results into the 'annotations' class variable
+     *
      * @param string $controllerClass
      */
     public function parseController(string $controllerClass)
@@ -63,6 +65,9 @@ class RouterService
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
                     $routeName = $routerAnnotation->name ?? 'route-' . static::$routesParsed++;
+                    if ($routerAnnotation->parent) {
+                        $routeName = $routerAnnotation->parent . '/' . $routeName;
+                    }
                     $this->annotations[$routeName] = new AnnotatedRoute($routerAnnotation, $controllerClass, $method->getName());
                 }
             }
@@ -74,29 +79,38 @@ class RouterService
      * @return array
      * @throws \Exception
      */
-    public function compile() : array
+    public function compile(): array
     {
+        ksort($this->annotations);
+
+        /** @var AnnotatedRoute[] $routes */
         $routes = [];
-        // Then, associate children to parents
         foreach ($this->annotations as $routeName => $annotatedRoute) {
-            if( $parent = $annotatedRoute->getParent() ){
-                if( !isset($this->annotations[$parent]) ){
-                    throw new \Exception( "An autowired route $routeName declares a parent of $parent, but $parent was not defined.");
+            if (strpos($routeName, '/') === false) {
+                $routes[$routeName] = $annotatedRoute;
+            } else {
+                $routePath = explode('/', $routeName);
+                $baseRouteName = array_shift($routePath);
+                if (!isset($routes[$baseRouteName])) {
+                    throw new \Exception("An autowired route declares a parent of $baseRouteName, but $baseRouteName is not defined.");
                 }
-                $this->annotations[$parent]->addChild( $routeName, $annotatedRoute );
+
+                $parentRoute = $routes[$baseRouteName];
+                for ($i = 0; $i < count($routePath) - 1; $i++) {
+                    $parentRoute = $parentRoute->getChild($routePath[$i]);
+                }
+                $parentRoute->addChild(end($routePath), $annotatedRoute);
             }
         }
 
         // Lastly, push all stacked routes into the router
-        foreach( $this->annotations as $routeName => $annotatedRoute ){
-            if( $annotatedRoute->getParent() ){
-                continue;
-            }
+        $routeConfig = [];
+        foreach ($routes as $routeName => $annotatedRoute) {
             $routeParams = $annotatedRoute->toArray();
-            $this->router->addRoute($routeName,$routeParams);
-            $routes[$routeName] = $routeParams;
+            $this->router->addRoute($routeName, $routeParams);
+            $routeConfig[$routeName] = $routeParams;
         }
 
-        return $routes;
+        return $routeConfig;
     }
 }

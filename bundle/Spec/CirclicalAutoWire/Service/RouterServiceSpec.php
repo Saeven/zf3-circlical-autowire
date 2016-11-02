@@ -5,6 +5,8 @@ namespace Spec\CirclicalAutoWire\Service;
 use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ChildRouteController;
 use Spec\CirclicalAutoWire\Controller\DistantChildRouteController;
+use Spec\CirclicalAutoWire\Controller\SameNameAController;
+use Spec\CirclicalAutoWire\Controller\SameNameBController;
 use Spec\CirclicalAutoWire\Controller\SimpleController;
 use CirclicalAutoWire\Service\RouterService;
 use PhpSpec\ObjectBehavior;
@@ -161,6 +163,62 @@ class RouterServiceSpec extends ObjectBehavior
 
         $this->parseController(ChildRouteController::class);
         $this->parseController(DistantChildRouteController::class);
+        $this->compile();
+    }
+
+    function it_lets_children_have_same_names($routeStack)
+    {
+        include __DIR__ . '/../../CirclicalAutoWire/Controller/SameNameAController.php';
+        include __DIR__ . '/../../CirclicalAutoWire/Controller/SameNameBController.php';
+
+        $routeStack->addRoute('foocrud', [
+            'type' => Literal::class,
+            'options' => [
+                'route' => '/foo',
+                'defaults' => [
+                    'controller' => SameNameAController::class,
+                    'action' => 'crud',
+                ],
+            ],
+            'child_routes' => [
+                'add' => [
+                    'type' => Literal::class,
+                    'options' => [
+                        'route' => "/add",
+                        'defaults' => [
+                            'controller' => SameNameAController::class,
+                            'action' => 'add',
+                        ],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled();
+
+        $routeStack->addRoute('barcrud', [
+            'type' => Literal::class,
+            'options' => [
+                'route' => '/bar',
+                'defaults' => [
+                    'controller' => SameNameBController::class,
+                    'action' => 'crud',
+                ],
+            ],
+            'child_routes' => [
+                'add' => [
+                    'type' => Literal::class,
+                    'options' => [
+                        'route' => "/add",
+                        'defaults' => [
+                            'controller' => SameNameBController::class,
+                            'action' => 'add',
+                        ],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled();
+
+        $this->parseController(SameNameAController::class);
+        $this->parseController(SameNameBController::class);
         $this->compile();
     }
 }

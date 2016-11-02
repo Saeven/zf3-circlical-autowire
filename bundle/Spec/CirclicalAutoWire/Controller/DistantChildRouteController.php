@@ -16,5 +16,7 @@ class DistantChildRouteController extends AbstractActionController
      *
      * @Route("/melt", parent="icecream", name="melt")
      */
-    public function meltAction(){}
+    public function meltAction()
+    {
+    }
 }

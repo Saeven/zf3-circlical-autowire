@@ -16,15 +16,22 @@ final class AnnotatedRoute
 
     private $children;
 
-    public function getParent(){
+    public function getParent()
+    {
         return $this->route->parent;
     }
 
-    public function addChild( string $routeName, AnnotatedRoute $route ){
-        if( !$this->children ){
+    public function addChild(string $routeName, AnnotatedRoute $route)
+    {
+        if (!$this->children) {
             $this->children = [];
         }
         $this->children[$routeName] = $route;
+    }
+
+    public function getChild(string $routeName)
+    {
+        return $this->children[$routeName] ?? null;
     }
 
     public function __construct(Route $route, string $controller, string $action)
@@ -55,13 +62,13 @@ final class AnnotatedRoute
             $route['options']['defaults'] = $this->route->defaults;
         }
 
-        if( $this->children ){
-            if( $this->route->terminate ) {
+        if ($this->children) {
+            if ($this->route->terminate) {
                 $route['may_terminate'] = $this->route->terminate;
             }
 
             $childRoutes = [];
-            foreach( $this->children as $routeName => $annotatedRoute ){
+            foreach ($this->children as $routeName => $annotatedRoute) {
                 $childRoutes[$routeName] = $annotatedRoute->toArray();
             }
             $route['child_routes'] = $childRoutes;

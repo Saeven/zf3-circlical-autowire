@@ -13,6 +13,7 @@ class RouterServiceFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $config = $container->get('config');
-        return new RouterService($container->get('HttpRouter'),$config['circlical']['autowire']['production_mode']);
+
+        return new RouterService($container->get('HttpRouter'), $config['circlical']['autowire']['production_mode']);
     }
 }
