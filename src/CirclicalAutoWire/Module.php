@@ -41,7 +41,7 @@ class Module
             throw new \Exception("Autowire module enabled, but the config wasn't available!");
         }
 
-        if ($configuration['circlical']['autowire']['production_mode']) {
+        if (Console::isConsole() || $configuration['circlical']['autowire']['production_mode']) {
             if (file_exists($configuration['circlical']['autowire']['compile_to'])) {
                 $autowiredRoutes = include $configuration['circlical']['autowire']['compile_to'];
                 $configuration['router']['routes'] = array_merge($configuration['router']['routes'], $autowiredRoutes);
@@ -52,16 +52,12 @@ class Module
 
     public function onBootstrap(MvcEvent $mvcEvent)
     {
-        if (Console::isConsole()) {
-            return;
-        }
-
         /** @var RouterService $routerService */
         $application = $mvcEvent->getApplication();
         $serviceLocator = $application->getServiceManager();
 
         $config = $serviceLocator->get('config');
-        $productionMode = $config['circlical']['autowire']['production_mode'];
+        $productionMode = Console::isConsole() || $config['circlical']['autowire']['production_mode'];
 
         if (!$productionMode) {
             $routerService = $serviceLocator->get(RouterService::class);

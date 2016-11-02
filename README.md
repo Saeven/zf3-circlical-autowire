@@ -207,5 +207,7 @@ you will see the compiled routes file recreated in the location you have specifi
 In this mode, annotations are not scanned.  Instead, the config file you created in dev mode is automatically merged with your Zend Framework's
  routes/route config to create a 'traditional' scenario where routes are hardcoded.  Zero module overhead.
  
+ **Important Note: When actuated via the console, it will behave as though it were in production mode**
+ 
 
 > I hope you like this module, you can reach out on freenode's #zftalk or @Saeven on Twitter!  All PRs considered!
