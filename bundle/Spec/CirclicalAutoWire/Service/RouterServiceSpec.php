@@ -225,7 +225,7 @@ class RouterServiceSpec extends ObjectBehavior
         $this->compile();
     }
 
-    function it_skips_other_annotations($routerStack)
+    function it_skips_other_annotations()
     {
         include __DIR__ . '/../../CirclicalAutoWire/Controller/OtherAnnotationsController.php';
         AnnotationRegistry::registerAutoloadNamespace("Spec\\CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../../"));
@@ -233,7 +233,7 @@ class RouterServiceSpec extends ObjectBehavior
         $this->shouldNotThrow(\Error::class)->during('parseController', [OtherAnnotationsController::class]);
     }
 
-    function it_skips_other_annotations_type_error($routerStack)
+    function it_skips_other_annotations_type_error()
     {
         include __DIR__ . '/../../CirclicalAutoWire/Controller/OtherAnnotationsTypeErrorController.php';
         AnnotationRegistry::registerAutoloadNamespace("Spec\\CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../../"));
