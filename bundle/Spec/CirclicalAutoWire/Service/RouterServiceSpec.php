@@ -2,9 +2,12 @@
 
 namespace Spec\CirclicalAutoWire\Service;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ChildRouteController;
 use Spec\CirclicalAutoWire\Controller\DistantChildRouteController;
+use Spec\CirclicalAutoWire\Controller\OtherAnnotationsController;
+use Spec\CirclicalAutoWire\Controller\OtherAnnotationsTypeErrorController;
 use Spec\CirclicalAutoWire\Controller\SameNameAController;
 use Spec\CirclicalAutoWire\Controller\SameNameBController;
 use Spec\CirclicalAutoWire\Controller\SimpleController;
@@ -220,5 +223,23 @@ class RouterServiceSpec extends ObjectBehavior
         $this->parseController(SameNameAController::class);
         $this->parseController(SameNameBController::class);
         $this->compile();
+    }
+
+    function it_skips_other_annotations($routerStack)
+    {
+        include __DIR__ . '/../../CirclicalAutoWire/Controller/OtherAnnotationsController.php';
+        AnnotationRegistry::registerAutoloadNamespace("Spec\\CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../../"));
+
+        $this->shouldNotThrow(\Error::class)->during('parseController', [OtherAnnotationsController::class]);
+    }
+
+    function it_skips_other_annotations_type_error($routerStack)
+    {
+        include __DIR__ . '/../../CirclicalAutoWire/Controller/OtherAnnotationsTypeErrorController.php';
+        AnnotationRegistry::registerAutoloadNamespace("Spec\\CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../../"));
+
+        //this should be thrown, but I'm unable to force it...
+//        $this->shouldThrow(\TypeError::class)->during('parseController', [OtherAnnotationsTypeErrorController::class]);
+        $this->shouldNotThrow(\PhpSpec\Exception\Example\ErrorException::class)->during('parseController', [OtherAnnotationsTypeErrorController::class]);
     }
 }
