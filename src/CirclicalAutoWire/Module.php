@@ -83,6 +83,12 @@ class Module
             $writer = new PhpArray();
             $writer->toFile($config['circlical']['autowire']['compile_to'], $routeConfig, true);
             $routerService->reset();
+
+            /** @var \Zend\ModuleManager\Listener\ConfigListener $cfg */
+            $cfg = $serviceLocator->get(\Zend\ModuleManager\ModuleManager::class)->getEvent()->getConfigListener();
+            if ($productionMode && $cfg->getOptions()->getConfigCacheEnabled() && file_exists($cfg->getOptions()->getConfigCacheFile())) {
+                @unlink($cfg->getOptions()->getConfigCacheFile());
+            }
         }
     }
 }
