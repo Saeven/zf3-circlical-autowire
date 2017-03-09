@@ -44,7 +44,7 @@ final class AnnotatedRoute
     public function toArray(): array
     {
         $route = [
-            'type' => $this->type ?? $this->identifyRoute($this->route->value),
+            'type' => $this->type ?? $this->route->type ?? $this->identifyRoute($this->route->value),
             'options' => [
                 'route' => $this->route->value,
                 'defaults' => [
