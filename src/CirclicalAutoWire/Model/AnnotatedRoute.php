@@ -44,7 +44,7 @@ final class AnnotatedRoute
     public function toArray(): array
     {
         $route = [
-            'type' => $this->type ?? $this->identifyRoute($this->route->value),
+            'type' => $this->type ?? $this->route->type ?? $this->identifyRoute($this->route->value),
             'options' => [
                 'route' => $this->route->value,
                 'defaults' => [
@@ -60,6 +60,10 @@ final class AnnotatedRoute
 
         if ($this->route->defaults) {
             $route['options']['defaults'] = $this->route->defaults;
+        }
+
+        if($this->route->priority){
+            $route['priority'] = $this->route->priority;
         }
 
         if ($this->children) {

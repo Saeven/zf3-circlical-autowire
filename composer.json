@@ -33,6 +33,7 @@
   },
   "require-dev": {
     "phpspec/phpspec": "@stable",
+    "zendframework/zend-form": "@stable",
     "henrikbjorn/phpspec-code-coverage": "@stable",
     "codacy/coverage": "dev-master"
   },

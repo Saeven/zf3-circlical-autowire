@@ -44,6 +44,11 @@ final class Route
      */
     public $parent;
 
+    /**
+     * @var int
+     */
+    public $priority;
+
 
     public function setPrefix($path)
     {

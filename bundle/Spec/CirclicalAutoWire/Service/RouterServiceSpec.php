@@ -28,14 +28,11 @@ class RouterServiceSpec extends ObjectBehavior
 
     function it_parses_controllers_by_class()
     {
-        include __DIR__ . '/../../CirclicalAutoWire/Controller/SimpleController.php';
         $this->parseController(SimpleController::class);
     }
 
     function it_parses_controllers_with_annotations($routeStack)
     {
-        include __DIR__ . '/../../CirclicalAutoWire/Controller/AnnotatedController.php';
-
         $routeStack->addRoute('baseroute1', [
             'type' => Literal::class,
             'options' => [
@@ -67,8 +64,6 @@ class RouterServiceSpec extends ObjectBehavior
 
     function it_parses_child_routes($routeStack)
     {
-        include __DIR__ . '/../../CirclicalAutoWire/Controller/ChildRouteController.php';
-
         $routeStack->addRoute('icecream', [
             'type' => Literal::class,
             'options' => [
@@ -168,9 +163,6 @@ class RouterServiceSpec extends ObjectBehavior
 
     function it_lets_children_have_same_names($routeStack)
     {
-        include __DIR__ . '/../../CirclicalAutoWire/Controller/SameNameAController.php';
-        include __DIR__ . '/../../CirclicalAutoWire/Controller/SameNameBController.php';
-
         $routeStack->addRoute('foocrud', [
             'type' => Literal::class,
             'options' => [
@@ -220,5 +212,14 @@ class RouterServiceSpec extends ObjectBehavior
         $this->parseController(SameNameAController::class);
         $this->parseController(SameNameBController::class);
         $this->compile();
+    }
+
+    function its_annotions_can_be_reset()
+    {
+        $this->parseController(SameNameAController::class);
+        $this->getAnnotations()->shouldHaveCount(2);
+        $this->reset();
+        $this->getAnnotations()->shouldBeArray();
+        $this->getAnnotations()->shouldHaveCount(0);
     }
 }

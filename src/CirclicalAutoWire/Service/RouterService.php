@@ -43,6 +43,11 @@ final class RouterService
         $this->annotations = [];
     }
 
+    public function getAnnotations(): array
+    {
+        return $this->annotations;
+    }
+
     /**
      * Parse a controller, storing results into the 'annotations' class variable
      *
@@ -51,6 +56,7 @@ final class RouterService
     public function parseController(string $controllerClass)
     {
         $class = new \ReflectionClass($controllerClass);
+        /** @var Route $classAnnotation */
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
 
         // First, get all annotations for this controller
@@ -58,9 +64,13 @@ final class RouterService
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $controllerClass) {
-                $set = $this->reader->getMethodAnnotations($method, Route::class);
+                $set = $this->reader->getMethodAnnotations($method);
                 /** @var Route $routerAnnotation */
                 foreach ($set as $routerAnnotation) {
+                    if (!$routerAnnotation instanceof Route) {
+                        continue;
+                    }
+
                     if ($classAnnotation) {
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
@@ -110,6 +120,15 @@ final class RouterService
             $this->router->addRoute($routeName, $routeParams);
             $routeConfig[$routeName] = $routeParams;
         }
+
+        // Sort them Segment first, Literal last (for LIFO) and by length
+        uasort($routeConfig, function (array $a, array $b) {
+            if ($a['type'] === $b['type']) {
+                return strlen($a['options']['route']) - strlen($b['options']['route']);
+            }
+
+            return -1 * ($a['type'] <=> $b['type']);
+        });
 
         return $routeConfig;
     }

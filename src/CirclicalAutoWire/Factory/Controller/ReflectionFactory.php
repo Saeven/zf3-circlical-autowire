@@ -43,7 +43,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
                         }
 
                         try {
-                            if (preg_match("/^([[:alpha:]]+)\\\\Form\\\\/us", $className)) {
+                            if (preg_match("/([[:alpha:]]+)\\\\Form\\\\/us", $className)) {
                                 $parameterInstances[] = $parentLocator->get('FormElementManager')->get($className);
                             } else {
                                 $parameterInstances[] = $parentLocator->get($className);

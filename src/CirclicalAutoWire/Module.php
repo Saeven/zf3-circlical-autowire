@@ -44,7 +44,11 @@ class Module
         if (Console::isConsole() || $configuration['circlical']['autowire']['production_mode']) {
             if (file_exists($configuration['circlical']['autowire']['compile_to'])) {
                 $autowiredRoutes = include $configuration['circlical']['autowire']['compile_to'];
-                $configuration['router']['routes'] = array_merge($configuration['router']['routes'], $autowiredRoutes);
+                if (isset($configuration['router']['routes'])) {
+                    $configuration['router']['routes'] = array_merge($configuration['router']['routes'], $autowiredRoutes);
+                } else {
+                    $configuration['router']['routes'] = $autowiredRoutes;
+                }
                 $configListener->setMergedConfig($configuration);
             }
         }
@@ -71,7 +75,7 @@ class Module
 
             $controllerClasses = [];
             foreach ($directoryScanner->getClassNames() as $className) {
-                if (strstr($className, '\\Controller\\')) {
+                if (false !== strpos($className, '\\Controller\\')) {
                     $controllerClasses[] = $className;
                 }
             }
