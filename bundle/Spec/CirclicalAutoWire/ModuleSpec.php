@@ -81,7 +81,7 @@ class ModuleSpec extends ObjectBehavior
         $this->configMerge($event);
     }
 
-    function it_scans_modules_during_bootstrap_in_dev_mode_only(MvcEvent $mvcEvent, Application $application, ContainerInterface $container)
+    function it_scans_modules_during_bootstrap_in_dev_mode_only(MvcEvent $mvcEvent, Application $application, ContainerInterface $container, ModuleManager $moduleManager, ModuleEvent $event, ConfigListener $configListener)
     {
         $mvcEvent->getApplication()->willReturn($application);
         $application->getServiceManager()->willReturn($container);
@@ -92,12 +92,15 @@ class ModuleSpec extends ObjectBehavior
             'circlical' => [
                 'autowire' => [
                     'production_mode' => false,
-                    'compile_to' =>  __DIR__ . '/compiled_routes.php',
+                    'compile_to' => __DIR__ . '/compiled_routes.php',
                 ],
             ],
         ]);
 
         $container->get(RouterService::class)->willReturn(new RouterService(new TreeRouteStack(), false));
+        $container->get(ModuleManager::class)->willReturn($moduleManager);
+        $moduleManager->getEvent()->willReturn($event);
+        $event->getConfigListener()->willReturn($configListener);
 
         $this->onBootstrap($mvcEvent);
     }
@@ -113,7 +116,7 @@ class ModuleSpec extends ObjectBehavior
             'circlical' => [
                 'autowire' => [
                     'production_mode' => true,
-                    'compile_to' =>  __DIR__ . '/compiled_routes.php',
+                    'compile_to' => __DIR__ . '/compiled_routes.php',
                 ],
             ],
         ]);
