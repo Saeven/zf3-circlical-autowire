@@ -13,8 +13,6 @@ use Zend\Console\Console;
 
 class Module
 {
-    private $modulesToScan = [];
-
     public function getConfig()
     {
         return include __DIR__ . '/../../config/module.config.php';
@@ -23,7 +21,6 @@ class Module
     public function init(ModuleManager $moduleManager)
     {
         $events = $moduleManager->getEventManager();
-        $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'moduleLoaded']);
         $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, [$this, 'configMerge']);
     }
 
@@ -66,18 +63,25 @@ class Module
         if (!$productionMode) {
 
             $routerService = $serviceLocator->get(RouterService::class);
-            $directoryScanner = new DirectoryScanner();
-
-            foreach ($this->modulesToScan as $moduleName) {
-                if (is_dir(getcwd() . '/module/' . $moduleName)) {
-                    $directoryScanner->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
-                }
-            }
-
             $controllerClasses = [];
-            foreach ($directoryScanner->getClassNames() as $className) {
-                if (false !== strpos($className, '\\Controller\\')) {
-                    $controllerClasses[] = $className;
+
+            /** @var ModuleManager $moduleManager */
+            $moduleManager = $application->getServiceManager()->get('ModuleManager');
+            foreach ($moduleManager->getLoadedModules() as $module) {
+                // ignore all Zend modules
+                if (strpos(get_class($module), 'Zend\\') === 0) {
+                    continue;
+                }
+
+                $reflector = new \ReflectionClass($module);
+                $moduleSrcPath = dirname($reflector->getFileName());
+                if (is_dir($moduleSrcPath)) {
+                    $directoryScanner = new DirectoryScanner($moduleSrcPath);
+                    foreach ($directoryScanner->getClassNames() as $className) {
+                        if (false !== strpos($className, '\\Controller\\') && class_exists($className)) {
+                            $controllerClasses[] = $className;
+                        }
+                    }
                 }
             }
 
