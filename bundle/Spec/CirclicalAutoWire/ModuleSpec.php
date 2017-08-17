@@ -30,7 +30,6 @@ class ModuleSpec extends ObjectBehavior
 
     function it_binds_its_events(ModuleManager $moduleManager, EventManager $eventManager)
     {
-        $eventManager->attach(ModuleEvent::EVENT_LOAD_MODULE, Argument::type('array'))->shouldBeCalled();
         $eventManager->attach(ModuleEvent::EVENT_MERGE_CONFIG, Argument::type('array'))->shouldBeCalled();
         $moduleManager->getEventManager()->willReturn($eventManager);
         $this->init($moduleManager);
@@ -100,6 +99,7 @@ class ModuleSpec extends ObjectBehavior
         $container->get(RouterService::class)->willReturn(new RouterService(new TreeRouteStack(), false));
         $container->get(ModuleManager::class)->willReturn($moduleManager);
         $moduleManager->getEvent()->willReturn($event);
+        $moduleManager->getLoadedModules()->willReturn($moduleManager->getLoadedModules());
         $event->getConfigListener()->willReturn($configListener);
 
         $this->onBootstrap($mvcEvent);

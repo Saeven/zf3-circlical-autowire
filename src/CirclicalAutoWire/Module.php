@@ -66,7 +66,7 @@ class Module
             $controllerClasses = [];
 
             /** @var ModuleManager $moduleManager */
-            $moduleManager = $application->getServiceManager()->get('ModuleManager');
+            $moduleManager = $serviceLocator->get(ModuleManager::class);
             foreach ($moduleManager->getLoadedModules() as $module) {
                 // ignore all Zend modules
                 if (strpos(get_class($module), 'Zend\\') === 0) {
