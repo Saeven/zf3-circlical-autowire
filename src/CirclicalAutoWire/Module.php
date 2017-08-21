@@ -68,19 +68,16 @@ class Module
             /** @var ModuleManager $moduleManager */
             $moduleManager = $serviceLocator->get(ModuleManager::class);
             foreach ($moduleManager->getLoadedModules() as $module) {
-                // ignore all Zend modules
-                if (strpos(get_class($module), 'Zend\\') === 0) {
+                $reflector = new \ReflectionClass($module);
+                $moduleSrcPath = dirname($reflector->getFileName());
+                if (!is_dir($moduleSrcPath) || false !== strpos($moduleSrcPath, '/vendor/')) {
                     continue;
                 }
 
-                $reflector = new \ReflectionClass($module);
-                $moduleSrcPath = dirname($reflector->getFileName());
-                if (is_dir($moduleSrcPath)) {
-                    $directoryScanner = new DirectoryScanner($moduleSrcPath);
-                    foreach ($directoryScanner->getClassNames() as $className) {
-                        if (false !== strpos($className, '\\Controller\\') && class_exists($className)) {
-                            $controllerClasses[] = $className;
-                        }
+                $directoryScanner = new DirectoryScanner($moduleSrcPath);
+                foreach ($directoryScanner->getClassNames() as $className) {
+                    if (false !== strpos($className, '\\Controller\\') && class_exists($className)) {
+                        $controllerClasses[] = $className;
                     }
                 }
             }
