@@ -92,9 +92,4 @@ class Module
             }
         }
     }
-
-    public function moduleLoaded($argument1)
-    {
-        // TODO: write logic here
-    }
 }
