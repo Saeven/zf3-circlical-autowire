@@ -24,11 +24,6 @@ class Module
         $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, [$this, 'configMerge']);
     }
 
-    public function moduleLoaded(ModuleEvent $event)
-    {
-        $this->modulesToScan[] = $event->getModuleName();
-    }
-
     public function configMerge(ModuleEvent $e)
     {
         $configListener = $e->getConfigListener();
@@ -96,5 +91,10 @@ class Module
                 @unlink($configListener->getOptions()->getConfigCacheFile());
             }
         }
+    }
+
+    public function moduleLoaded($argument1)
+    {
+        // TODO: write logic here
     }
 }

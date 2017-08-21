@@ -61,14 +61,6 @@ class ModuleSpec extends ObjectBehavior
         $this->configMerge($event);
     }
 
-    function it_listens_for_loading_modules(ModuleEvent $event1, ModuleEvent $event2)
-    {
-        $event1->getModuleName()->willReturn('A');
-        $event2->getModuleName()->willReturn('B');
-        $this->moduleLoaded($event1);
-        $this->moduleLoaded($event2);
-    }
-
     function it_merges_with_existing_routes_in_production_mode_during_config_merge(ModuleEvent $event, ConfigListener $configListener)
     {
         $event->getConfigListener()->willReturn($configListener);
