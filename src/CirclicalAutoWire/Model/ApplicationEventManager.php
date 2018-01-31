@@ -2,7 +2,9 @@
 
 namespace CirclicalAutoWire\Model;
 
-interface ApplicationEventManager
+use Zend\EventManager\EventManagerInterface;
+
+interface ApplicationEventManager extends EventManagerInterface
 {
 
 }
