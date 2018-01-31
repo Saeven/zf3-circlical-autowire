@@ -18,6 +18,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
         'Zend\Mvc\I18n\Translator' => 'MvcTranslator',
         'ZfcTwig\View\TwigRenderer' => 'TemplateRenderer',
         'Zend\Form\FormElementManager\FormElementManagerV3Polyfill' => 'FormElementManager',
+        'Zend\EventManager\EventManager' => 'EventManager',
     ];
 
     public function canCreate(ContainerInterface $container, $requestedName)

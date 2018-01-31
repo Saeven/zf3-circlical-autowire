@@ -3,14 +3,12 @@
 namespace Spec\CirclicalAutoWire\Factory\Controller;
 
 use CirclicalAutoWire\Factory\Controller\ReflectionFactory;
-use CirclicalAutoWire\Model\AnnotatedRoute;
 use Interop\Container\ContainerInterface;
 use PhpSpec\ObjectBehavior;
 use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ControllerWithParameters;
 use Spec\CirclicalAutoWire\Form\DummyForm;
 use Spec\CirclicalAutoWire\Model\DummyObject;
-use Zend\Form\FormElementManager\FormElementManagerTrait;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 
 class ReflectionFactorySpec extends ObjectBehavior
