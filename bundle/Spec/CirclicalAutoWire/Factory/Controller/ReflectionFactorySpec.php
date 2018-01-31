@@ -9,7 +9,9 @@ use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ControllerWithParameters;
 use Spec\CirclicalAutoWire\Form\DummyForm;
 use Spec\CirclicalAutoWire\Model\DummyObject;
+use Zend\EventManager\EventManager;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
+use Zend\Mvc\Application;
 
 class ReflectionFactorySpec extends ObjectBehavior
 {
@@ -28,13 +30,20 @@ class ReflectionFactorySpec extends ObjectBehavior
         $this->canCreate($interface, 'SuperFactory')->shouldBe(false);
     }
 
-    function it_can_create_controllers_through_reflection(ContainerInterface $interface, DummyObject $dummyObject, FormElementManagerV3Polyfill $formManager, DummyForm $form)
+    function it_can_create_controllers_through_reflection(ContainerInterface $interface, DummyObject $dummyObject, FormElementManagerV3Polyfill $formManager, DummyForm $form, EventManager $eventManager, Application $application)
     {
         $formManager->get(DummyForm::class)->willReturn($form);
         $interface->get(DummyObject::class)->willReturn($dummyObject);
         $interface->get('FormElementManager')->willReturn($formManager);
+
+        $application->getEventManager()->willReturn($eventManager);
+        $interface->get('Application')->willReturn($application);
+
         $interface->get('config')->willReturn([]);
         $this->__invoke($interface, ControllerWithParameters::class);
+
+        $interface->get('Application')->shouldHaveBeenCalled();
+        $application->getEventManager()->shouldHaveBeenCalled();
     }
 
     function it_creates_parameterless_controllers(ContainerInterface $interface)

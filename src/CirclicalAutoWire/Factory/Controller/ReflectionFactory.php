@@ -20,7 +20,6 @@ final class ReflectionFactory implements AbstractFactoryInterface
 
         ValidatorPluginManager::class => 'ValidatorManager',
         FormElementManagerV3Polyfill::class => 'FormElementManager',
-        EventManager::class => 'EventManager',
 
         /* using strings since they're not required by package composer */
         'ZfcTwig\View\TwigRenderer' => 'TemplateRenderer',
@@ -61,7 +60,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
                         try {
                             if (preg_match("/([[:alpha:]]+)\\\\Form\\\\/u", $className)) {
                                 $parameterInstances[] = $parentLocator->get('FormElementManager')->get($className);
-                            } else if ($className === ApplicationEventManager::class) {
+                            } else if ($className === EventManager::class) {
                                 $parameterInstances[] = $parentLocator->get('Application')->getEventManager();
                             } else {
                                 $parameterInstances[] = $parentLocator->get($className);
