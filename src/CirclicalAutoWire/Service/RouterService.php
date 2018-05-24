@@ -74,7 +74,7 @@ final class RouterService
                     if ($classAnnotation) {
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
-                    $routeName = $routerAnnotation->name ?? 'route-' . static::$routesParsed++;
+                    $routeName = $routerAnnotation->name ?? 'route-' . str_pad(static::$routesParsed++, 5, '0', STR_PAD_LEFT);
                     if ($routerAnnotation->parent) {
                         $routeName = $routerAnnotation->parent . '/' . $routeName;
                     }
