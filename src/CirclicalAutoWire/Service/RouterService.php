@@ -16,11 +16,11 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  */
 final class RouterService
 {
+    public static $routesParsed = 0;
+
     private $router;
 
     private $reader;
-
-    public static $routesParsed = 0;
 
     private $productionMode;
 
@@ -28,7 +28,7 @@ final class RouterService
 
     public function __construct(TreeRouteStack $router, bool $productionMode)
     {
-        AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", realpath(__DIR__ . "/../../"));
+        AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", \dirname(__DIR__, 2) . '/');
         $this->router = $router;
         $this->reader = new AnnotationReader();
         $this->productionMode = $productionMode;
@@ -52,6 +52,8 @@ final class RouterService
      * Parse a controller, storing results into the 'annotations' class variable
      *
      * @param string $controllerClass
+     *
+     * @throws \ReflectionException
      */
     public function parseController(string $controllerClass)
     {
@@ -63,7 +65,7 @@ final class RouterService
 
         /** @var \ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() == $controllerClass) {
+            if ($method->getDeclaringClass()->getName() === $controllerClass) {
                 $set = $this->reader->getMethodAnnotations($method);
                 /** @var Route $routerAnnotation */
                 foreach ($set as $routerAnnotation) {
@@ -106,7 +108,7 @@ final class RouterService
                 }
 
                 $parentRoute = $routes[$baseRouteName];
-                for ($i = 0; $i < count($routePath) - 1; $i++) {
+                for ($i = 0; $i < \count($routePath) - 1; $i++) {
                     $parentRoute = $parentRoute->getChild($routePath[$i]);
                 }
                 $parentRoute->addChild(end($routePath), $annotatedRoute);
@@ -124,7 +126,7 @@ final class RouterService
         // Sort them Segment first, Literal last (for LIFO) and by length
         uasort($routeConfig, function (array $a, array $b) {
             if ($a['type'] === $b['type']) {
-                return strlen($a['options']['route']) - strlen($b['options']['route']);
+                return \strlen($a['options']['route']) - \strlen($b['options']['route']);
             }
 
             return -1 * ($a['type'] <=> $b['type']);
