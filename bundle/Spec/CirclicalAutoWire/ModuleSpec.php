@@ -7,14 +7,14 @@ use CirclicalAutoWire\Service\RouterService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
-use Zend\Console\Console;
-use Zend\EventManager\EventManager;
-use Zend\ModuleManager\Listener\ConfigListener;
-use Zend\ModuleManager\ModuleEvent;
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\Application;
-use Zend\Mvc\MvcEvent;
-use Zend\Router\Http\TreeRouteStack;
+use Laminas\Console\Console;
+use Laminas\EventManager\EventManager;
+use Laminas\ModuleManager\Listener\ConfigListener;
+use Laminas\ModuleManager\ModuleEvent;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Router\Http\TreeRouteStack;
 
 class ModuleSpec extends ObjectBehavior
 {

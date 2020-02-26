@@ -5,7 +5,7 @@ namespace CirclicalAutoWire\Service;
 use CirclicalAutoWire\Annotations\Route;
 use CirclicalAutoWire\Model\AnnotatedRoute;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Zend\Router\Http\TreeRouteStack;
+use Laminas\Router\Http\TreeRouteStack;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**

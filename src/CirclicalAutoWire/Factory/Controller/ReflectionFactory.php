@@ -4,10 +4,10 @@ namespace CirclicalAutoWire\Factory\Controller;
 
 use CirclicalAutoWire\Model\ApplicationEventManager;
 use Interop\Container\ContainerInterface;
-use Zend\EventManager\EventManager;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\Validator\ValidatorPluginManager;
+use Laminas\EventManager\EventManager;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Validator\ValidatorPluginManager;
 
 final class ReflectionFactory implements AbstractFactoryInterface
 {
@@ -23,7 +23,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
 
         /* using strings since they're not required by package composer */
         'ZfcTwig\View\TwigRenderer' => 'TemplateRenderer',
-        'Zend\Mvc\I18n\Translator' => 'MvcTranslator',
+        'Laminas\Mvc\I18n\Translator' => 'MvcTranslator',
     ];
 
     public function canCreate(ContainerInterface $container, $requestedName)

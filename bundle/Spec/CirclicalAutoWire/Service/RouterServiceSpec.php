@@ -13,9 +13,9 @@ use Spec\CirclicalAutoWire\Controller\SameNameBController;
 use Spec\CirclicalAutoWire\Controller\SimpleController;
 use CirclicalAutoWire\Service\RouterService;
 use PhpSpec\ObjectBehavior;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
-use Zend\Router\Http\TreeRouteStack;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
+use Laminas\Router\Http\TreeRouteStack;
 
 class RouterServiceSpec extends ObjectBehavior
 {

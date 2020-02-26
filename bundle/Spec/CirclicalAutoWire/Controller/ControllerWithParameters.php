@@ -4,9 +4,9 @@ namespace Spec\CirclicalAutoWire\Controller;
 
 use Spec\CirclicalAutoWire\Form\DummyForm;
 use Spec\CirclicalAutoWire\Model\DummyObject;
-use Zend\EventManager\EventManager;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\EventManager\EventManager;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 /**
  * Class ControllerWithParameters

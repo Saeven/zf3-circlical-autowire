@@ -3,8 +3,8 @@
 namespace CirclicalAutoWire\Model;
 
 use CirclicalAutoWire\Annotations\Route;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
 
 final class AnnotatedRoute
 {
