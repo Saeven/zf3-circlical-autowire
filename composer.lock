@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d48136bd293d1c05fa3aad86d139e6b9",
+    "content-hash": "1f98ffdffcc6313a7f32b7cdbf157bc1",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -3796,8 +3796,8 @@
         "laminas/laminas-code": 0,
         "laminas/laminas-config": 0,
         "doctrine/annotations": 0,
-        "laminas/laminas-form": 0,
         "friends-of-phpspec/phpspec-code-coverage": 0,
+        "laminas/laminas-form": 0,
         "codacy/coverage": 20
     },
     "prefer-stable": false,
