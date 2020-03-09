@@ -9,9 +9,9 @@ use Spec\CirclicalAutoWire\Controller\AnnotatedController;
 use Spec\CirclicalAutoWire\Controller\ControllerWithParameters;
 use Spec\CirclicalAutoWire\Form\DummyForm;
 use Spec\CirclicalAutoWire\Model\DummyObject;
-use Zend\EventManager\EventManager;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
-use Zend\Mvc\Application;
+use Laminas\EventManager\EventManager;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
+use Laminas\Mvc\Application;
 
 class ReflectionFactorySpec extends ObjectBehavior
 {

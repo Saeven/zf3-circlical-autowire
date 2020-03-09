@@ -5,8 +5,8 @@ namespace Spec\CirclicalAutoWire\Model;
 use CirclicalAutoWire\Annotations\Route;
 use CirclicalAutoWire\Model\AnnotatedRoute;
 use PhpSpec\ObjectBehavior;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
 
 class AnnotatedRouteSpec extends ObjectBehavior
 {

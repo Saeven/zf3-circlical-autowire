@@ -2,7 +2,7 @@
 
 namespace Spec\CirclicalAutoWire\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 use CirclicalAutoWire\Annotations\Route;
 
 /**

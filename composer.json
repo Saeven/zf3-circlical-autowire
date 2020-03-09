@@ -21,20 +21,21 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.0.0",
-    "zendframework/zend-mvc": "^3.0.1",
-    "zendframework/zend-servicemanager": "^3.0.1",
-    "zendframework/zend-eventmanager": "^3.0.1",
-    "zendframework/zend-console": "@stable",
-    "zendframework/zend-router": "@stable",
-    "zendframework/zend-code": "@stable",
-    "zendframework/zend-config": "@stable",
-    "doctrine/annotations": "@stable"
+    "php": "^7.1.0",
+    "laminas/laminas-mvc": "^3.0.1",
+    "laminas/laminas-servicemanager": "^3.0.1",
+    "laminas/laminas-eventmanager": "^3.0.1",
+    "laminas/laminas-console": "@stable",
+    "laminas/laminas-router": "@stable",
+    "laminas/laminas-code": "@stable",
+    "laminas/laminas-config": "@stable",
+    "doctrine/annotations": "@stable",
+    "laminas/laminas-dependency-plugin": "^1.0"
   },
   "require-dev": {
-    "phpspec/phpspec": "@stable",
-    "zendframework/zend-form": "@stable",
-    "henrikbjorn/phpspec-code-coverage": "@stable",
+    "phpspec/phpspec": "6.1.*",
+    "friends-of-phpspec/phpspec-code-coverage": "@stable",
+    "laminas/laminas-form": "@stable",
     "codacy/coverage": "dev-master"
   },
   "autoload": {

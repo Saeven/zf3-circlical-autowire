@@ -3,13 +3,13 @@
 namespace CirclicalAutoWire;
 
 use CirclicalAutoWire\Service\RouterService;
-use Zend\Code\Scanner\DirectoryScanner;
-use Zend\Config\Config;
-use Zend\Config\Writer\PhpArray;
-use Zend\ModuleManager\ModuleEvent;
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\MvcEvent;
-use Zend\Console\Console;
+use Laminas\Code\Scanner\DirectoryScanner;
+use Laminas\Config\Config;
+use Laminas\Config\Writer\PhpArray;
+use Laminas\ModuleManager\ModuleEvent;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Console\Console;
 
 class Module
 {

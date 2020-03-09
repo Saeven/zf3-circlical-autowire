@@ -6,7 +6,7 @@ suites:
         spec_path: bundle
 bootstrap: bundle/Spec/CirclicalAutoWire/bootstrap.php
 extensions:
-  PhpSpecCodeCoverage\CodeCoverageExtension:
+  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
     format:
       - html
       - clover

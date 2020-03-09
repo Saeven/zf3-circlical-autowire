@@ -6,7 +6,7 @@ use CirclicalAutoWire\Factory\Service\RouterServiceFactory;
 use CirclicalAutoWire\Service\RouterService;
 use Interop\Container\ContainerInterface;
 use PhpSpec\ObjectBehavior;
-use Zend\Router\Http\TreeRouteStack;
+use Laminas\Router\Http\TreeRouteStack;
 
 class RouterServiceFactorySpec extends ObjectBehavior
 {
