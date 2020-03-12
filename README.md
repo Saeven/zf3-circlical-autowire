@@ -1,4 +1,4 @@
-# Route Auto-Wiring for Zend-MVC
+# Route Auto-Wiring for Laminas & Zend-MVC 
 [![Build Status](https://travis-ci.org/Saeven/zf3-circlical-autowire.svg?branch=master)](https://travis-ci.org/Saeven/zf3-circlical-autowire)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/488fcf3040df4fa4b3ab4b2c15ad5752)](https://www.codacy.com/app/alemaire/zf3-circlical-autowire?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Saeven/zf3-circlical-autowire&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/488fcf3040df4fa4b3ab4b2c15ad5752)](https://www.codacy.com/app/alemaire/zf3-circlical-autowire?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Saeven/zf3-circlical-autowire&amp;utm_campaign=Badge_Coverage)
