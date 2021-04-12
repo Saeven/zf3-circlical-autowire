@@ -64,7 +64,6 @@ class Module
         $productionMode = Console::isConsole() || $config['circlical']['autowire']['production_mode'];
 
         if (!$productionMode) {
-
             $routerService = $serviceLocator->get(RouterService::class);
             $directoryScanner = new DirectoryScanner();
 

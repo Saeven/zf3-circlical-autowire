@@ -27,10 +27,9 @@
     "laminas/laminas-eventmanager": "^3.0.1",
     "laminas/laminas-console": "@stable",
     "laminas/laminas-router": "@stable",
-    "laminas/laminas-code": "@stable",
+    "laminas/laminas-code": "3.5.1",
     "laminas/laminas-config": "@stable",
-    "doctrine/annotations": "@stable",
-    "laminas/laminas-dependency-plugin": "^1.0"
+    "doctrine/annotations": "@stable"
   },
   "require-dev": {
     "phpspec/phpspec": "6.1.*",

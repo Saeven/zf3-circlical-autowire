@@ -54,5 +54,4 @@ final class Route
     {
         $this->value = str_replace('//', '/', $path . $this->value);
     }
-
 }
