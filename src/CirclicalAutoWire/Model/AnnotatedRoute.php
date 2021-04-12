@@ -62,7 +62,7 @@ final class AnnotatedRoute
             $route['options']['defaults'] = $this->route->defaults;
         }
 
-        if($this->route->priority){
+        if ($this->route->priority) {
             $route['priority'] = $this->route->priority;
         }
 

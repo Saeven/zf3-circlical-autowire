@@ -2,7 +2,6 @@
 
 namespace CirclicalAutoWire\Factory\Service;
 
-
 use CirclicalAutoWire\Service\RouterService;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
