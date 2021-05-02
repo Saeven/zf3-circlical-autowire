@@ -13,26 +13,28 @@ use Laminas\Console\Console;
 
 class Module
 {
-    private $modulesToScan = [];
+    protected static $isConsole;
+
+    private array $modulesToScan = [];
 
     public function getConfig()
     {
         return include __DIR__ . '/../../config/module.config.php';
     }
 
-    public function init(ModuleManager $moduleManager)
+    public function init(ModuleManager $moduleManager): void
     {
         $events = $moduleManager->getEventManager();
         $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'moduleLoaded']);
         $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, [$this, 'configMerge']);
     }
 
-    public function moduleLoaded(ModuleEvent $event)
+    public function moduleLoaded(ModuleEvent $event): void
     {
         $this->modulesToScan[] = $event->getModuleName();
     }
 
-    public function configMerge(ModuleEvent $e)
+    public function configMerge(ModuleEvent $e): void
     {
         $configListener = $e->getConfigListener();
         $configuration = $configListener->getMergedConfig(false);
@@ -41,8 +43,8 @@ class Module
             throw new \Exception("Autowire module enabled, but the config wasn't available!");
         }
 
-        if (Console::isConsole() || $configuration['circlical']['autowire']['production_mode']) {
-            if (file_exists($configuration['circlical']['autowire']['compile_to'])) {
+        if (static::isConsole() || $configuration['circlical']['autowire']['production_mode']) {
+            if (is_file($configuration['circlical']['autowire']['compile_to'])) {
                 $autowiredRoutes = include $configuration['circlical']['autowire']['compile_to'];
                 if (isset($configuration['router']['routes'])) {
                     $configuration['router']['routes'] = array_merge($configuration['router']['routes'], $autowiredRoutes);
@@ -54,6 +56,23 @@ class Module
         }
     }
 
+    public static function isConsole(): bool
+    {
+        if (null === static::$isConsole) {
+            static::$isConsole = (PHP_SAPI === 'cli');
+        }
+
+        return static::$isConsole;
+    }
+
+    public static function overrideIsConsole($flag): void
+    {
+        if (null !== $flag) {
+            $flag = (bool)$flag;
+        }
+        static::$isConsole = $flag;
+    }
+
     public function onBootstrap(MvcEvent $mvcEvent)
     {
         /** @var RouterService $routerService */
@@ -61,7 +80,7 @@ class Module
         $serviceLocator = $application->getServiceManager();
 
         $config = $serviceLocator->get('config');
-        $productionMode = Console::isConsole() || $config['circlical']['autowire']['production_mode'];
+        $productionMode = static::isConsole() || $config['circlical']['autowire']['production_mode'];
 
         if (!$productionMode) {
             $routerService = $serviceLocator->get(RouterService::class);

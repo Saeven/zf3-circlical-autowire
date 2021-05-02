@@ -5,13 +5,13 @@ suites:
         src_path: src
         spec_path: bundle
 bootstrap: bundle/Spec/CirclicalAutoWire/bootstrap.php
-extensions:
-  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
-    format:
-      - html
-      - clover
-    output:
-      html: build/coverage
-      clover: build/coverage.xml
-    whitelist:
-     - src
+#extensions:
+#  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+#    format:
+#      - html
+#      - clover
+#    output:
+#      html: build/coverage
+#      clover: build/coverage.xml
+#    whitelist:
+#     - src
