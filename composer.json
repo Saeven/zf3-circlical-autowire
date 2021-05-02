@@ -22,17 +22,17 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.4 | >=8",
-    "laminas/laminas-mvc": "^3.0.1",
-    "laminas/laminas-servicemanager": "^3.0.1",
-    "laminas/laminas-eventmanager": "^3.0.1",
-    "laminas/laminas-console": "@stable",
+    "laminas/laminas-mvc": "^3.0.1 | ^3.2.0",
+    "laminas/laminas-servicemanager": "^3.0.1 | ^3.6.4",
+    "laminas/laminas-eventmanager": "^3.0.1 | ^3.3.1",
     "laminas/laminas-router": "@stable",
     "laminas/laminas-code": "3.5.1",
     "laminas/laminas-config": "@stable",
+    "laminas/laminas-cli": "@stable",
     "doctrine/annotations": "@stable"
   },
   "require-dev": {
-    "phpspec/phpspec": "6.1.*",
+    "phpspec/phpspec": "6.1.* | 7.0.1",
     "friends-of-phpspec/phpspec-code-coverage": "@stable",
     "laminas/laminas-form": "@stable",
     "codacy/coverage": "dev-master"
