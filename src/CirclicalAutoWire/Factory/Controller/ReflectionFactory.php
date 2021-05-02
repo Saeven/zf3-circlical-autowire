@@ -51,8 +51,13 @@ final class ReflectionFactory implements AbstractFactoryInterface
                 $parameterInstances = [];
 
                 foreach ($parameters as $parameter) {
-                    if ($parameter->getClass()) {
-                        $className = $parameter->getClass()->getName();
+                    if ($parameter->getType()) {
+                        if ($parameter->getName() === 'config' && $parameter->getType()->getName() === 'array') {
+                            $parameterInstances[] = $parentLocator->get('config');
+                            continue;
+                        }
+
+                        $className = $parameter->getType()->getName();
                         if (array_key_exists($className, static::$aliases)) {
                             $className = static::$aliases[$className];
                         }
@@ -70,9 +75,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
                             die(__CLASS__ . " couldn't create an instance of <b>$className</b> to satisfy the constructor for <b>$requestedName</b> at param $parameter.");
                         }
                     } else {
-                        if ($parameter->isArray() && $parameter->getName() === 'config') {
-                            $parameterInstances[] = $parentLocator->get('config');
-                        } elseif ($parameter->getName() === 'formElementManager') {
+                        if ($parameter->getName() === 'formElementManager') {
                             $parameterInstances[] = $parentLocator->get('FormElementManager');
                         } elseif ($parameter->getName() === 'serviceLocator') {
                             $parameterInstances[] = $container;

@@ -7,7 +7,6 @@ use CirclicalAutoWire\Service\RouterService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
-use Laminas\Console\Console;
 use Laminas\EventManager\EventManager;
 use Laminas\ModuleManager\Listener\ConfigListener;
 use Laminas\ModuleManager\ModuleEvent;
@@ -86,7 +85,7 @@ class ModuleSpec extends ObjectBehavior
         $mvcEvent->getApplication()->willReturn($application);
         $application->getServiceManager()->willReturn($container);
 
-        Console::overrideIsConsole(false);
+        Module::overrideIsConsole(false);
 
         $container->get('config')->willReturn([
             'circlical' => [
@@ -110,7 +109,7 @@ class ModuleSpec extends ObjectBehavior
         $mvcEvent->getApplication()->willReturn($application);
         $application->getServiceManager()->willReturn($container);
 
-        Console::overrideIsConsole(false);
+        Module::overrideIsConsole(false);
 
         $container->get('config')->willReturn([
             'circlical' => [
