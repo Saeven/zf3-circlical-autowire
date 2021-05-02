@@ -1,11 +1,13 @@
 {
   "name": "saeven/zf3-circlical-autowire",
-  "description": "Annotation based routing, and magic Controller creation for ZF3.",
+  "description": "Annotation based routing, and magic Controller creation for Laminas and ZF3.",
   "type": "library",
   "license": "MPL-2.0",
   "homepage": "https://github.com/Saeven/zf3-circlical-autowire",
   "keywords": [
     "router",
+    "laminas",
+    "autowire",
     "zf3",
     "annotation",
     "acl",
