@@ -1,11 +1,16 @@
-# Route Auto-Wiring for Zend-MVC
+# Route Auto-Wiring for Laminas-MVC
 [![Build Status](https://github.com/saeven/zf3-circlical-autowire/actions/workflows/phpspec-task.yml/badge.svg)](https://github.com/Saeven/zf3-circlical-autowire/actions)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/74a8233ff1464fada1a333104770705f)](https://www.codacy.com/gh/Saeven/zf3-circlical-autowire/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Saeven/zf3-circlical-autowire&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/74a8233ff1464fada1a333104770705f)](https://www.codacy.com/gh/Saeven/zf3-circlical-autowire/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Saeven/zf3-circlical-autowire&utm_campaign=Badge_Coverage)
 [![Total Downloads](https://poser.pugx.org/saeven/zf3-circlical-autowire/downloads)](https://packagist.org/packages/saeven/zf3-circlical-autowire)
 
 
-A zend-mvc module that favors rapid development, that compiles routes to standard PHP arrays for production (and merges them automatically for you too).  Does not compete with standard route declarations (both can be used in tandem).
+A laminas-mvc module that favors rapid development, it does two things:
+
+* compiles routes to standard PHP arrays for production (and merges them automatically for you too).  Does not compete with standard route declarations (both can be used in tandem).
+* automatically applies DI into your controllers, do you don't need to write a ton of simple factories
+
+> Older versions support zend-mvc, check releases.
   
 Use annotations right above your actions to automatically plug routes into the ZF3 Router.  No more gear-switching 
 to route files, or digging through route config arrays when you are refactoring.
@@ -24,9 +29,14 @@ Install with:
 Then, add it near the top of your application.config.php
 
     'CirclicalAutoWire',
+
+# Automatic Controller DI
+
+Don't need to do anything.  Excellently lazy, it's automatic.  You can code Controllers, add dependencies to your constructor, and this module will inject
+classes from your service container right into your controller.
     
     
-## Prepping Annotations
+# Automatic Routes
 
 In any controller that should use this module, simply add this **use statement**:
 
