@@ -10,8 +10,8 @@ use Spec\CirclicalAutoWire\Controller\ControllerWithParameters;
 use Spec\CirclicalAutoWire\Form\DummyForm;
 use Spec\CirclicalAutoWire\Model\DummyObject;
 use Laminas\EventManager\EventManager;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
 use Laminas\Mvc\Application;
+use Laminas\Form\FormElementManager;
 
 class ReflectionFactorySpec extends ObjectBehavior
 {
@@ -30,8 +30,14 @@ class ReflectionFactorySpec extends ObjectBehavior
         $this->canCreate($interface, 'SuperFactory')->shouldBe(false);
     }
 
-    function it_can_create_controllers_through_reflection(ContainerInterface $interface, DummyObject $dummyObject, FormElementManagerV3Polyfill $formManager, DummyForm $form, EventManager $eventManager, Application $application)
-    {
+    function it_can_create_controllers_through_reflection(
+        ContainerInterface $interface,
+        DummyObject $dummyObject,
+        FormElementManager $formManager,
+        DummyForm $form,
+        EventManager $eventManager,
+        Application $application
+    ) {
         $formManager->get(DummyForm::class)->willReturn($form);
         $interface->get(DummyObject::class)->willReturn($dummyObject);
         $interface->get('FormElementManager')->willReturn($formManager);

@@ -2,11 +2,9 @@
 
 namespace CirclicalAutoWire\Factory\Controller;
 
-use CirclicalAutoWire\Model\ApplicationEventManager;
 use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManager;
 use Laminas\Form\FormElementManager;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\Validator\ValidatorPluginManager;
 
