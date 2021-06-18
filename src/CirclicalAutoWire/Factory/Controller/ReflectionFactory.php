@@ -5,6 +5,7 @@ namespace CirclicalAutoWire\Factory\Controller;
 use CirclicalAutoWire\Model\ApplicationEventManager;
 use Interop\Container\ContainerInterface;
 use Laminas\EventManager\EventManager;
+use Laminas\Form\FormElementManager;
 use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\Validator\ValidatorPluginManager;
@@ -16,10 +17,10 @@ final class ReflectionFactory implements AbstractFactoryInterface
      * These aliases work to substitute class names with SM types that are buried in ZF.
      * @var array
      */
-    private static $aliases = [
+    private static array $aliases = [
 
         ValidatorPluginManager::class => 'ValidatorManager',
-        FormElementManagerV3Polyfill::class => 'FormElementManager',
+        FormElementManager::class => 'FormElementManager',
 
         /* using strings since they're not required by package composer */
         'ZfcTwig\View\TwigRenderer' => 'TemplateRenderer',
@@ -28,7 +29,7 @@ final class ReflectionFactory implements AbstractFactoryInterface
 
     public function canCreate(ContainerInterface $container, $requestedName)
     {
-        return substr($requestedName, -10) == 'Controller';
+        return substr($requestedName, -10) === 'Controller';
     }
 
     /**
@@ -73,12 +74,6 @@ final class ReflectionFactory implements AbstractFactoryInterface
                         } catch (\Exception $exception) {
                             echo $exception->getMessage();
                             die(__CLASS__ . " couldn't create an instance of <b>$className</b> to satisfy the constructor for <b>$requestedName</b> at param $parameter.");
-                        }
-                    } else {
-                        if ($parameter->getName() === 'formElementManager') {
-                            $parameterInstances[] = $parentLocator->get('FormElementManager');
-                        } elseif ($parameter->getName() === 'serviceLocator') {
-                            $parameterInstances[] = $container;
                         }
                     }
                 }
