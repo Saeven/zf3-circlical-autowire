@@ -1,37 +1,47 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CirclicalAutoWire\Service;
 
 use CirclicalAutoWire\Annotations\Route;
 use CirclicalAutoWire\Model\AnnotatedRoute;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Laminas\Router\Http\TreeRouteStack;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Exception;
+use Laminas\Router\Http\TreeRouteStack;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+
+use function array_shift;
+use function count;
+use function dirname;
+use function end;
+use function explode;
+use function ksort;
+use function str_pad;
+use function strlen;
+use function strpos;
+use function uasort;
+
+use const STR_PAD_LEFT;
 
 /**
- * Class RouterService
- * @package CirclicalAutoWire\Service
- *
- * This service's purpose, is to bridge annotations with the Zend SM router
+ * This service's purpose, is to bridge annotations with the router.
  */
 final class RouterService
 {
-    public static $routesParsed = 0;
+    public static int $routesParsed = 0;
+    private TreeRouteStack $router;
+    private AnnotationReader $reader;
+    private array $annotations;
 
-    private $router;
-
-    private $reader;
-
-    private $productionMode;
-
-    private $annotations;
-
-    public function __construct(TreeRouteStack $router, bool $productionMode)
+    public function __construct(TreeRouteStack $router)
     {
-        AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", \dirname(__DIR__, 2) . '/');
+        AnnotationRegistry::registerAutoloadNamespace("CirclicalAutoWire\\Annotations", dirname(__DIR__, 2) . '/');
         $this->router = $router;
         $this->reader = new AnnotationReader();
-        $this->productionMode = $productionMode;
         $this->annotations = [];
     }
 
@@ -51,19 +61,17 @@ final class RouterService
     /**
      * Parse a controller, storing results into the 'annotations' class variable
      *
-     * @param string $controllerClass
-     *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function parseController(string $controllerClass)
     {
-        $class = new \ReflectionClass($controllerClass);
+        $class = new ReflectionClass($controllerClass);
         /** @var Route $classAnnotation */
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
 
         // First, get all annotations for this controller
 
-        /** @var \ReflectionMethod $method */
+        /** @var ReflectionMethod $method */
         foreach ($class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() === $controllerClass) {
                 $set = $this->reader->getMethodAnnotations($method);
@@ -76,7 +84,8 @@ final class RouterService
                     if ($classAnnotation) {
                         $routerAnnotation->setPrefix($classAnnotation->value);
                     }
-                    $routeName = $routerAnnotation->name ?? 'route-' . str_pad(static::$routesParsed++, 5, '0', STR_PAD_LEFT);
+
+                    $routeName = $routerAnnotation->name ?? ('route-' . str_pad((string) static::$routesParsed++, 5, '0', STR_PAD_LEFT));
                     if ($routerAnnotation->parent) {
                         $routeName = $routerAnnotation->parent . '/' . $routeName;
                     }
@@ -88,8 +97,8 @@ final class RouterService
 
     /**
      * Compile routes into an array, simultaneously adding them to the router
-     * @return array
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function compile(): array
     {
@@ -104,11 +113,11 @@ final class RouterService
                 $routePath = explode('/', $routeName);
                 $baseRouteName = array_shift($routePath);
                 if (!isset($routes[$baseRouteName])) {
-                    throw new \Exception("An autowired route declares a parent of $baseRouteName, but $baseRouteName is not defined.");
+                    throw new Exception("An autowired route declares a parent of $baseRouteName, but $baseRouteName is not defined.");
                 }
 
                 $parentRoute = $routes[$baseRouteName];
-                for ($i = 0; $i < \count($routePath) - 1; $i++) {
+                for ($i = 0; $i < count($routePath) - 1; $i++) {
                     $parentRoute = $parentRoute->getChild($routePath[$i]);
                 }
                 $parentRoute->addChild(end($routePath), $annotatedRoute);
@@ -124,9 +133,9 @@ final class RouterService
         }
 
         // Sort them Segment first, Literal last (for LIFO) and by length
-        uasort($routeConfig, function (array $a, array $b) {
+        uasort($routeConfig, static function (array $a, array $b) {
             if ($a['type'] === $b['type']) {
-                return \strlen($a['options']['route']) - \strlen($b['options']['route']);
+                return strlen($a['options']['route']) - strlen($b['options']['route']);
             }
 
             return -1 * ($a['type'] <=> $b['type']);

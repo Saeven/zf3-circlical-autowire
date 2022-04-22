@@ -1,23 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CirclicalAutoWire;
 
 use CirclicalAutoWire\Service\RouterService;
-use Laminas\Code\Scanner\DirectoryScanner;
+use Exception;
 use Laminas\Config\Config;
 use Laminas\Config\Writer\PhpArray;
 use Laminas\ModuleManager\ModuleEvent;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Console\Console;
+use Roave\BetterReflection\BetterReflection;
+use Roave\BetterReflection\Reflector\DefaultReflector;
+use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
+
+use function array_merge;
+use function getcwd;
+use function is_dir;
+use function is_file;
+use function strpos;
+
+use const PHP_SAPI;
 
 class Module
 {
-    protected static $isConsole;
-
+    protected static ?bool $isConsole = null;
     private array $modulesToScan = [];
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return include __DIR__ . '/../../config/module.config.php';
     }
@@ -40,7 +51,7 @@ class Module
         $configuration = $configListener->getMergedConfig(false);
 
         if (!isset($configuration['circlical']['autowire'])) {
-            throw new \Exception("Autowire module enabled, but the config wasn't available!");
+            throw new Exception("Autowire module enabled, but the config wasn't available!");
         }
 
         if (static::isConsole() || $configuration['circlical']['autowire']['production_mode']) {
@@ -59,23 +70,36 @@ class Module
     public static function isConsole(): bool
     {
         if (null === static::$isConsole) {
-            static::$isConsole = (PHP_SAPI === 'cli');
+            static::$isConsole = PHP_SAPI === 'cli';
         }
 
         return static::$isConsole;
     }
 
-    public static function overrideIsConsole($flag): void
+    public static function overrideIsConsole(?bool $flag): void
     {
-        if (null !== $flag) {
-            $flag = (bool)$flag;
-        }
         static::$isConsole = $flag;
+    }
+
+    public function scanForControllers(array $rootDirectoriesToScan): array
+    {
+        $astLocator = (new BetterReflection())->astLocator();
+        $sourceLocator = new DirectoriesSourceLocator($rootDirectoriesToScan, $astLocator);
+        $reflector = new DefaultReflector($sourceLocator);
+
+        $controllerClasses = [];
+        foreach ($reflector->reflectAllClasses() as $reflection) {
+            $className = $reflection->getName();
+            if (false !== strpos($className, '\\Controller\\')) {
+                $controllerClasses[] = $className;
+            }
+        }
+
+        return $controllerClasses;
     }
 
     public function onBootstrap(MvcEvent $mvcEvent)
     {
-        /** @var RouterService $routerService */
         $application = $mvcEvent->getApplication();
         $serviceLocator = $application->getServiceManager();
 
@@ -84,20 +108,15 @@ class Module
 
         if (!$productionMode) {
             $routerService = $serviceLocator->get(RouterService::class);
-            $directoryScanner = new DirectoryScanner();
+            $rootDirectoriesToScan = [];
 
             foreach ($this->modulesToScan as $moduleName) {
                 if (is_dir(getcwd() . '/module/' . $moduleName)) {
-                    $directoryScanner->addDirectory(getcwd() . '/module/' . $moduleName . '/src/');
+                    $rootDirectoriesToScan[] = getcwd() . '/module/' . $moduleName . '/src/';
                 }
             }
 
-            $controllerClasses = [];
-            foreach ($directoryScanner->getClassNames() as $className) {
-                if (false !== strpos($className, '\\Controller\\')) {
-                    $controllerClasses[] = $className;
-                }
-            }
+            $controllerClasses = $this->scanForControllers($rootDirectoriesToScan);
 
             foreach ($controllerClasses as $controllerClass) {
                 $routerService->parseController($controllerClass);
@@ -107,11 +126,6 @@ class Module
             $writer = new PhpArray();
             $writer->toFile($config['circlical']['autowire']['compile_to'], $routeConfig, true);
             $routerService->reset();
-
-            $configListener = $serviceLocator->get(ModuleManager::class)->getEvent()->getConfigListener();
-            if ($productionMode && $configListener->getOptions()->getConfigCacheEnabled() && file_exists($configListener->getOptions()->getConfigCacheFile())) {
-                @unlink($configListener->getOptions()->getConfigCacheFile());
-            }
         }
     }
 }

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CirclicalAutoWire\Annotations;
+
+use function str_replace;
 
 /**
  * @Annotation
@@ -8,49 +12,18 @@ namespace CirclicalAutoWire\Annotations;
  */
 final class Route
 {
-    /**
-     * @Required
-     * @var string
-     */
-    public $value;
+    /** @Required */
+    public string $value = '';
 
-    /**
-     * @var string
-     */
-    public $name;
+    public ?string $name = null;
+    public ?string $type = null;
+    public ?array $constraints = null;
+    public ?array $defaults = null;
+    public ?bool $terminate = null;
+    public ?string $parent = null;
+    public ?int $priority = null;
 
-    /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var array
-     */
-    public $constraints;
-
-    /**
-     * @var array
-     */
-    public $defaults;
-
-    /**
-     * @var bool
-     */
-    public $terminate;
-
-    /**
-     * @var string
-     */
-    public $parent;
-
-    /**
-     * @var int
-     */
-    public $priority;
-
-
-    public function setPrefix($path)
+    public function setPrefix(string $path): void
     {
         $this->value = str_replace('//', '/', $path . $this->value);
     }
