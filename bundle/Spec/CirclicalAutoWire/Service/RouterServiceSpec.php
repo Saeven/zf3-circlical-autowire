@@ -243,4 +243,5 @@ class RouterServiceSpec extends ObjectBehavior
         $this->getAnnotations()->shouldBeArray();
         $this->getAnnotations()->shouldHaveCount(0);
     }
+
 }

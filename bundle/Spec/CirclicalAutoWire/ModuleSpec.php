@@ -15,6 +15,8 @@ use Laminas\Mvc\Application;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Router\Http\TreeRouteStack;
 
+use function getcwd;
+
 class ModuleSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -123,5 +125,11 @@ class ModuleSpec extends ObjectBehavior
         $container->get(RouterService::class)->shouldNotBeCalled();
 
         $this->onBootstrap($mvcEvent);
+    }
+
+    function it_can_properly_scan_controllers()
+    {
+        $controllers = $this->scanForControllers([__DIR__ . '/Controller']);
+        $controllers->shouldHaveCount(9);
     }
 }
