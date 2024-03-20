@@ -66,7 +66,7 @@ final class RouterService
     public function parseController(string $controllerClass)
     {
         $class = new ReflectionClass($controllerClass);
-        /** @var Route $classAnnotation */
+        /** @var ?Route $classAnnotation */
         $classAnnotation = $this->reader->getClassAnnotation($class, Route::class);
 
         // First, get all annotations for this controller
