@@ -23,7 +23,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "~8.0.12 || ~8.1.0 || ~8.2.0 ",
+    "php": "~8.0.12 || ~8.1.0 || ~8.2.0 || ~8.3.0",
     "laminas/laminas-mvc": "^3.3",
     "laminas/laminas-servicemanager": "^3.11",
     "laminas/laminas-eventmanager": "^3.4",
@@ -34,7 +34,7 @@
     "laminas/laminas-config": "^3.7",
     "laminas/laminas-cli": "^1.4.0",
     "doctrine/annotations": "^1.13.0",
-    "roave/better-reflection": "^4.12 | ^5.4",
+    "roave/better-reflection": "^4.12 | ^5.4 | ^6.24",
     "psr/container": "*"
 
   },
@@ -42,7 +42,7 @@
     "phpspec/phpspec": "6.1.* | ^7.0.1 | ^7.2.0",
     "friends-of-phpspec/phpspec-code-coverage": "@stable",
     "codacy/coverage": "dev-master",
-    "phpstan/phpstan": "1.1.2",
+    "phpstan/phpstan": "^1.10",
     "laminas/laminas-coding-standard": "^2.3.0"
   },
   "autoload": {
